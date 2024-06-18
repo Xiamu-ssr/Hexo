@@ -1,0 +1,48 @@
+﻿name: Deploy Hexo to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # 当推送到 main 分支时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: false  # 禁用子模块检查
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Hexo Git Deployer
+        run: npm install hexo-deployer-git --save
+
+      - name: Clean and Generate Static Files
+        run: |
+          npx hexo clean
+          npx hexo generate
+
+      - name: Deploy to GitHub Pages
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git clone https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git .deploy_git
+          cd .deploy_git
+          git checkout gh-pages || git checkout --orphan gh-pages
+          cd ..
+          rsync -av --delete public/ .deploy_git/
+          cd .deploy_git
+          git add -A
+          git commit -m 'Deploy to GitHub Pages' || echo "No changes to commit"
+          git push origin gh-pages
