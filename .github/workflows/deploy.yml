@@ -35,14 +35,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git clone https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git .deploy_git
-          cd .deploy_git
-          git checkout gh-pages || git checkout --orphan gh-pages
-          cd ..
-          rsync -av --delete public/ .deploy_git/
-          cd .deploy_git
-          git add -A
-          git commit -m 'Deploy to GitHub Pages' || echo "No changes to commit"
-          git push origin gh-pages
+          npx hexo deploy
