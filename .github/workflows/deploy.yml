@@ -24,7 +24,9 @@ jobs:
         run: npm install
 
       - name: Install Hexo Git Deployer
-        run: npm install hexo-deployer-git --save
+        run: |
+          npm install hexo-deployer-git --save
+          npm install hexo-cli -g
 
       - name: Clean and Generate Static Files
         run: |
