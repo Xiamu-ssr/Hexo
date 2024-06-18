@@ -28,8 +28,8 @@ jobs:
 
       - name: Clean and Generate Static Files
         run: |
-          npx hexo clean
-          npx hexo generate
+          hexo clean
+          hexo generate
 
       - name: Configure Git
         run: |
@@ -38,10 +38,5 @@ jobs:
 
       - name: Deploy to GitHub Pages
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          git clone https://github.com/${{ github.repository }} .deploy_git
-          cd .deploy_git
-          git remote set-url origin https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
-          cd ..
-          npx hexo deploy
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: hexo deploy
