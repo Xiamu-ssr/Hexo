@@ -6,6 +6,7 @@ author: John Doe
 language: en
 timezone: ''
 url: https://xiamu-ssr.github.io/Hexo
+root: /Hexo/
 permalink: ':year/:month/:day/:title/'
 permalink_defaults: null
 pretty_urls:
