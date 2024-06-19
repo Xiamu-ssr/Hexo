@@ -40,5 +40,11 @@ jobs:
 
       - name: Deploy to GitHub Pages
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: hexo deploy
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          cd public/
+          git init
+          git add -A
+          git commit -m "Create by workflows"
+          git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/Xiamu-ssr/Hexo.git
+          git push origin HEAD:gh-pages -f
