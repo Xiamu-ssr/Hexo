@@ -2,7 +2,7 @@
 widgets:
   -
     # Where should the widget be placed, left sidebar or right sidebar
-    position: left
+    position: right
     type: profile
     # Author name
     author: Xiamu
