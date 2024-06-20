@@ -187,34 +187,34 @@ donates:
     -
         type: afdian
         # URL to the "Afdian.net" personal page
-        url: ''
+        url: 'https://afdian.net/u/5247e1a42ec011efb6055254001e7c00'
     # Alipay donate button configurations
     -
         type: alipay
         # Alipay qrcode image URL
-        qrcode: ''
+        qrcode: '/images/alipay.jpg'
     # "Buy me a coffee" donate button configurations
     -
         type: buymeacoffee
         # URL to the "Buy me a coffee" page
-        url: ''
+        url: 'https://www.buymeacoffee.com/xiamu'
     # Patreon donate button configurations
-    -
-        type: patreon
-        # URL to the Patreon page
-        url: ''
+    # -
+    #     type: patreon
+    #     # URL to the Patreon page
+    #     url: ''
     # Paypal donate button configurations
-    -
-        type: paypal
-        # Paypal business ID or email address
-        business: ''
-        # Currency code
-        currency_code: USD
+    # -
+    #     type: paypal
+    #     # Paypal business ID or email address
+    #     business: ''
+    #     # Currency code
+    #     currency_code: USD
     # Wechat donate button configurations
     -
         type: wechat
         # Wechat qrcode image URL
-        qrcode: ''
+        qrcode: '/images/wechat.png'
 # Share plugin configurations
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Share/
 share:
