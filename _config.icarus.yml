@@ -165,9 +165,21 @@ search:
 # Comment plugin configurations
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Comment/
 comment:
-    type: disqus
-    # Disqus shortname
-    shortname: ''
+    type: gitalk
+    client_id: Ov23liifh7QhDzZDzWm0
+    client_secret: 9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab
+    repo: Hexo
+    owner: Xiamu-ssr
+    admin:
+        - Xiamu-ssr
+    per_page: 10                    # 可选填
+    distraction_free_mode: false    # 可选填
+    pager_direction: last           # 可选填
+    create_issue_manually: false    # 可选填
+    proxy:                          # 可选填
+    flip_move_options:              # 可选填
+    enable_hotkey: true             # 可选填
+    language: zh-CN                 # 可选填
 # Donate plugin configurations
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Donation/
 donates:
