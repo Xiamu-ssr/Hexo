@@ -12,17 +12,17 @@ head:
     # https://developer.mozilla.org/en-US/docs/Web/Manifest
     manifest:
         # Name of the web application (default to the site title)
-        name: 
+        name: 夏木的个人博客-记录
         # The displayed name of the web application
         # when there is not enough space to display full name
-        short_name: 
+        short_name: XR
         # The start URL of the web application
         start_url: 
         # The default theme color for the application
-        theme_color: 
+        theme_color: '#1E1E1E'
         # A placeholder background color for the application page to display
         # before its stylesheet is loaded
-        background_color: 
+        background_color: '#252526'
         # The preferred display mode for the website
         display: standalone
         # Image files that can serve as application icons for different contexts
@@ -97,8 +97,8 @@ head:
     # Additional HTML meta tags in an array
     meta:
         # Meta tag specified in <attribute>=<value> style
-        # E.g., name=theme-color;content=#123456 => <meta name="theme-color" content="#123456">
-        - ''
+        # E.g., name=theme-color;content=#123456 => <meta name="theme-color" content="123456">
+        - 'name=theme-color;content=#123456'
     # URL or path to the website's RSS atom.xml
     rss: 
 # Page top navigation bar configurations
@@ -172,7 +172,7 @@ comment:
     owner: Xiamu-ssr
     admin:
         - Xiamu-ssr
-    per_page: 10                    # 可选填
+    per_page: 15                    # 可选填
     distraction_free_mode: false    # 可选填
     pager_direction: last           # 可选填
     create_issue_manually: false    # 可选填

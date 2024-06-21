@@ -1,0 +1,38 @@
+﻿/* 背景色 */
+html {
+    background-color: #2e2e2e !important;
+}
+
+/* 顶部导航栏背景色 */
+.navbar {
+    background-color: #000 !important;
+}
+
+/* 卡片背景色 */
+.card {
+    background-color: #1e1e1e !important;
+}
+
+/* 顶部导航栏字体颜色 */
+.navbar-item, .navbar-link {
+    color: #e1e1e1 !important;
+}
+
+/* 文章正文字体颜色 */
+.card {
+    color: #eeeeee !important;
+}
+
+/* 文章标题字体颜色 */
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #e1e1e1 !important;
+}
+
+/* 其他文字颜色 */
+.title {
+    color: #e1e1e1 !important;
+}
+
+.menu-list a {
+    color: #e1e1e1 !important;
+}

@@ -1,4 +1,9 @@
-﻿toc: true
+﻿sidebar:
+    # Right sidebar configurations
+    right:
+        # Whether the sidebar sticks to the top when page scrolls
+        sticky: true
+toc: true
 widgets:
   -
     # Where should the widget be placed, left sidebar or right sidebar
@@ -6,35 +11,6 @@ widgets:
     type: profile
     # Author name
     author: Xiamu
-    # Author title
-    author_title: IT Developer
-    # Author's current location
-    location: Earth, Solar System
-    # URL or path to the avatar image
-    avatar: 
-    # Whether show the rounded avatar image
-    avatar_rounded: false
-    # Email address for the Gravatar
-    gravatar: 
-    # URL or path for the follow button
-    follow_link: https://github.com/Xiamu-ssr
-    # Links to be shown on the bottom of the profile widget
-    social_links:
-        Github:
-            icon: fab fa-github
-            url: https://github.com/Xiamu-ssr
-        Facebook:
-            icon: fab fa-facebook
-            url: https://facebook.com
-        Twitter:
-            icon: fab fa-twitter
-            url: https://twitter.com
-        Dribbble:
-            icon: fab fa-dribbble
-            url: https://dribbble.com
-        RSS:
-            icon: fas fa-rss
-            url: /
   -
     # Where should the widget be placed, left sidebar or right sidebar
     position: right
@@ -42,6 +18,6 @@ widgets:
     # Whether to show the index of each heading
     index: false
     # Whether to collapse sub-headings when they are out-of-view
-    collapsed: true
+    collapsed: false
     # Maximum level of headings to show (1-6)
-    depth: 3
+    depth: 2
