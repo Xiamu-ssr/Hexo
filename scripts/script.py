@@ -1,5 +1,6 @@
 ﻿import os
 import re
+import random
 from pathlib import Path
 from datetime import datetime
 
@@ -20,6 +21,11 @@ def process_single_md(md_path):
             cover_text = f"cover: /{year}/{month}/{day}/{folder_name}/{last_image}"
             thumbnail_text = f"thumbnail: /{year}/{month}/{day}/{folder_name}/{last_image}"
             update_md_file(md_path, cover_text, thumbnail_text)
+    else:
+        random_index = random.randint(1, 5)
+        cover_text = f"cover: /gallery/defaultCover{random_index}.png"
+        thumbnail_text = f"thumbnail: /gallery/defaultThumbnail{random_index}.png"
+        update_md_file(md_path, cover_text, thumbnail_text)
 
 def process_directory(directory):
     directory = Path(directory)
@@ -47,14 +53,27 @@ def update_md_file(md_path, cover_text, thumbnail_text):
                 file.write(thumbnail_text + '\n')
             elif line.startswith("date:"):
                 date_str = line[len("date: "):].strip()
-                date_str = datetime.strptime(date_str, '%Y-%m-%d-%H-%M-%S').strftime('%Y-%m-%d %H:%M:%S')
-                file.write(f"date: {date_str}\n")
-            elif line.startswith("#"):
+                if '-' in date_str and ':' not in date_str:
+                    date_str = datetime.strptime(date_str, '%Y-%m-%d-%H-%M-%S').strftime('%Y-%m-%d %H:%M:%S')
+                    file.write(f"date: {date_str}\n")
+                else:
+                    file.write(f"date: {date_str}\n")
+            elif line.startswith("# "):
                 file.write(line)
                 if i + 1 < len(lines) and '-' in lines[i + 1] and lines[i + 1].count('-') > 5:
                     skip_line = True
             else:
-                file.write(line)
+                corrected_line = correct_header_level(line)
+                file.write(corrected_line)
+                
+
+def correct_header_level(line):
+    match = re.match(r'^(#{2,6})\s+#\s+(.*)', line)
+    if match:
+        header_level = len(match.group(1))
+        corrected_level = max(1, header_level - 2)
+        return f"{'#' * corrected_level} {match.group(2)}\n"
+    return line
 
 if __name__ == "__main__":
     import argparse
