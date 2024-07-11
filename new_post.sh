@@ -34,7 +34,7 @@ file="source/_posts/$timestamp.md"
 newFile="$halfFolder/$timestamp.md"
 
 # 随机选择封面和缩略图
-randomIndex=$(( (RANDOM % 5) + 1 ))
+randomIndex=$(( (RANDOM % 10) + 1 ))
 cover="/gallery/defaultCover${randomIndex}.png"
 thumbnail="/gallery/defaultThumbnail${randomIndex}.png"
 

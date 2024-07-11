@@ -31,7 +31,7 @@ $mdFile = "source/_posts/$timestamp.md"
 $newMdFile = "$halfFolder/$timestamp.md"
 
 # 随机选择封面和缩略图
-$randomIndex = Get-Random -Minimum 1 -Maximum 6
+$randomIndex = Get-Random -Minimum 1 -Maximum 11
 $cover = "/gallery/defaultCover$randomIndex.png"
 $thumbnail = "/gallery/defaultThumbnail$randomIndex.png"
 
