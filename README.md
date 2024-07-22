@@ -10,7 +10,7 @@
 <br> Hexo基于Github Action实现自动更新Github Pages
 <br>
 <a href="https://xiamu-ssr.github.io/Hexo//">Preview</a> |
-<a href="https://xiamu-ssr.github.io/Hexo/2024/06/19/2024-06-19-12-31-52/">Documentation</a>
+<a href="https://xiamu-ssr.github.io/Hexo/2024/06/19/2024-H1/2024-06-19-12-31-52/?t=1721648481453">Documentation</a>
  | <a href="https://github.com/ppoffice/hexo-theme-icarus">Icarus Docs</a>
 <br>
 </p>
