@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>Kafka Consumer - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="1. Consumer基本流程 初始化消费者  首先，创建一个 Kafka 消费者实例，并设置必要的配置属性，例如 Kafka 集群地址、消费者组 ID、序列化器等。 12345678Properties props &amp;#x3D; new Properties();props.put(&amp;quot;bootstrap.servers&amp;quot;, &amp;quot;localhost:9092&amp;quot;);pro"><meta property="og:type" content="blog"><meta property="og:title" content="Kafka Consumer"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="1. Consumer基本流程 初始化消费者  首先，创建一个 Kafka 消费者实例，并设置必要的配置属性，例如 Kafka 集群地址、消费者组 ID、序列化器等。 12345678Properties props &amp;#x3D; new Properties();props.put(&amp;quot;bootstrap.servers&amp;quot;, &amp;quot;localhost:9092&amp;quot;);pro"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover1.png"><meta property="article:published_time" content="2024-07-30T18:58:30.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.522Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="Kafka"><meta property="article:tag" content="Consumer"><meta property="article:tag" content="消费者"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover1.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/"},"headline":"Kafka Consumer","image":["https://xiamu-ssr.github.io/Hexo/gallery/defaultCover1.png"],"datePublished":"2024-07-30T18:58:30.000Z","dateModified":"2024-08-11T07:21:48.522Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"1. Consumer基本流程 初始化消费者  首先，创建一个 Kafka 消费者实例，并设置必要的配置属性，例如 Kafka 集群地址、消费者组 ID、序列化器等。 12345678Properties props &#x3D; new Properties();props.put(&quot;bootstrap.servers&quot;, &quot;localhost:9092&quot;);pro"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/gallery/defaultCover1.png" alt="Kafka Consumer"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-30T18:58:30.000Z" title="7/30/2024, 6:58:30 PM">2024-07-30</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.522Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">19 分钟读完 (大约2780个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">Kafka Consumer</h1><div class="content"><h1 id="1-Consumer基本流程"><a href="#1-Consumer基本流程" class="headerlink" title="1. Consumer基本流程"></a>1. Consumer基本流程</h1><ol>
+<li>初始化消费者</li>
+</ol>
+<p>首先，创建一个 Kafka 消费者实例，并设置必要的配置属性，例如 Kafka 集群地址、消费者组 ID、序列化器等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">props.put(<span class="string">&quot;bootstrap.servers&quot;</span>, <span class="string">&quot;localhost:9092&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;group.id&quot;</span>, <span class="string">&quot;my-group&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;key.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;value.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;isolation.level&quot;</span>, <span class="string">&quot;read_committed&quot;</span>); <span class="comment">// 可选，确保事务性消息的一致性</span></span><br><span class="line"></span><br><span class="line">KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> <span class="title class_">KafkaConsumer</span>&lt;&gt;(props);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>订阅主题</li>
+</ol>
+<p>创建消费者实例后，订阅一个或多个主题，以便消费者能够从这些主题中获取消息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumer.subscribe(Arrays.asList(<span class="string">&quot;my-topic&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>轮询消息</li>
+</ol>
+<p>消费者使用 <code>poll</code> 方法从 Kafka 中拉取消息。<code>poll</code> 方法会阻塞指定的时间，并返回拉取到的消息记录。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">    <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">        <span class="comment">// 处理消息</span></span><br><span class="line">        System.out.printf(<span class="string">&quot;offset = %d, key = %s, value = %s%n&quot;</span>, record.offset(), record.key(), record.value());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>处理消息</li>
+</ol>
+<p>在轮询到消息后，需要对消息进行处理。处理逻辑根据具体业务需求来实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">    <span class="comment">// 处理消息的业务逻辑</span></span><br><span class="line">    process(record);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>提交偏移量</li>
+</ol>
+<p>为了保证消息不会被重复处理或丢失，消费者需要提交已经处理过的消息偏移量。可以选择自动提交或手动提交偏移量。</p>
+<ul>
+<li><p><strong>自动提交</strong>：<br>自动提交偏移量由 <code>enable.auto.commit</code> 属性控制。如果设置为 <code>true</code>，消费者会定期自动提交偏移量。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">props.put(&quot;enable.auto.commit&quot;,</span> <span class="string">&quot;true&quot;);</span></span><br><span class="line"><span class="attr">props.put(&quot;auto.commit.interval.ms&quot;,</span> <span class="string">&quot;1000&quot;);</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>手动提交</strong>：<br>手动提交提供了更细粒度的控制。可以在处理完一批消息后手动提交偏移量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">            <span class="comment">// 处理消息</span></span><br><span class="line">            process(record);</span><br><span class="line">        &#125;</span><br><span class="line">        consumer.commitSync(); <span class="comment">// 同步提交偏移量</span></span><br><span class="line">        <span class="comment">// 或者使用异步提交</span></span><br><span class="line">        <span class="comment">// consumer.commitAsync();</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    consumer.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li>关闭消费者</li>
+</ol>
+<p>在应用程序关闭时，确保关闭消费者以释放资源。<code>close</code> 方法会确保任何未提交的偏移量被提交，并关闭网络连接。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumer.close();</span><br></pre></td></tr></table></figure>
+
+<p>以下是一个完整的消费者示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.Duration;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KafkaConsumerExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">        props.put(<span class="string">&quot;bootstrap.servers&quot;</span>, <span class="string">&quot;localhost:9092&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;group.id&quot;</span>, <span class="string">&quot;my-group&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;key.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;value.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;isolation.level&quot;</span>, <span class="string">&quot;read_committed&quot;</span>);</span><br><span class="line"></span><br><span class="line">        KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> <span class="title class_">KafkaConsumer</span>&lt;&gt;(props);</span><br><span class="line">        consumer.subscribe(Arrays.asList(<span class="string">&quot;my-topic&quot;</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">                ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">                <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">                    System.out.printf(<span class="string">&quot;offset = %d, key = %s, value = %s%n&quot;</span>, record.offset(), record.key(), record.value());</span><br><span class="line">                &#125;</span><br><span class="line">                consumer.commitSync();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            consumer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-数据消费偏移量问题"><a href="#2-数据消费偏移量问题" class="headerlink" title="2. 数据消费偏移量问题"></a>2. 数据消费偏移量问题</h1><p>consumer默认会定时把当前消费到哪里的偏移量更新到Kafka 的内部主题 <code>__consumer_offsets</code> 中。这是一个特殊的主题，用于存储消费者组的偏移量信息。但是这会存在一些问题。比如</p>
+<ol>
+<li><p>默认每5000ms(由<code>auto.commit.interval.ms</code>决定)自动更新一次偏移量，当consumer这次拉取了100条数据，我消费到了第50条时consumer崩溃了，此时还未更新偏移量，下一次consumer启动后，会重复消费那50条数据。</p>
+</li>
+<li><p>即使换成手动提交，也存在同样的问题，消费到一半，consumer崩溃了，还没走到手动提交那一步，kafka记录的偏移量是过时的，所有下一次consumer重启，一样会重复消费。</p>
+</li>
+</ol>
+<h1 id="3-事务级别的问题"><a href="#3-事务级别的问题" class="headerlink" title="3. 事务级别的问题"></a>3. 事务级别的问题</h1><p>即使生产者使用了事务，却仍然可以导致consumer消费到不该消费的数据。</p>
+<h3 id="Kafka-的事务机制"><a href="#Kafka-的事务机制" class="headerlink" title="Kafka 的事务机制"></a>Kafka 的事务机制</h3><ol>
+<li><p><strong>事务性生产者</strong>：</p>
+<ul>
+<li>当一个事务性生产者开始一个事务时，它会生成一个唯一的 <code>transactional.id</code>，并通过 <code>beginTransaction()</code> 开始事务。</li>
+<li>所有在这个事务中的消息会被标记为事务性的，并且这些消息的状态（已提交或已中止）会被记录在事务日志中。</li>
+<li>当事务成功完成时，调用 <code>commitTransaction()</code>，所有的消息都会被原子地标记为已提交。</li>
+<li>如果事务失败，调用 <code>abortTransaction()</code>，所有在这个事务中的消息都会被标记为已中止，并不会对外可见。</li>
+</ul>
+</li>
+<li><p><strong>事务协调器</strong>：</p>
+<ul>
+<li>Kafka 的事务协调器负责管理事务的状态。</li>
+<li>它确保所有涉及的分区的一致性，并在事务提交或中止时更新事务日志。</li>
+</ul>
+</li>
+</ol>
+<h3 id="消费者的隔离级别"><a href="#消费者的隔离级别" class="headerlink" title="消费者的隔离级别"></a>消费者的隔离级别</h3><p>Kafka 消费者有两种隔离级别：</p>
+<ol>
+<li><p><strong>read_uncommitted</strong>（默认值）：</p>
+<ul>
+<li>在这种隔离级别下，消费者可以读取到所有的消息，包括未提交的事务性消息。</li>
+<li>这种隔离级别可能会导致消费者读取到事务中止后的消息，从而出现消费者消费到未提交或中止事务的数据的情况。</li>
+</ul>
+</li>
+<li><p><strong>read_committed</strong>：</p>
+<ul>
+<li>在这种隔离级别下，消费者只能读取到已提交的事务性消息。</li>
+<li>消费者会过滤掉未提交和已中止的事务消息，确保只消费到已经成功提交的消息。</li>
+<li>使用这种隔离级别可以确保端到端的精确一次语义。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumerConfig.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, <span class="string">&quot;read_committed&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果消费者的隔离级别设置为 <code>read_uncommitted</code>，那么它会读取到所有消息，包括未提交的事务性消息。因此，即使事务中止，消费者也可能已经读取到这些消息。</p>
+<h1 id="4-消费者组"><a href="#4-消费者组" class="headerlink" title="4. 消费者组"></a>4. 消费者组</h1><p>一个消费者组只能订阅多个主题，组内的消费者共同消费这些主题。</p>
+<p><mark>一个分区只能由组内的一个消费者消费</mark>。</p>
+<p>如果消费者组的消费者数量大于topic的分区数，那么有的consumer将会空闲，用作备用。</p>
+<p>如果小于topic分区数，那么有的消费者会消费多个分区。</p>
+<p>当消费者组的消费者数量大于topic的分区时，此时有消费者崩溃，那么空闲的消费者会代替它，那么如何从刚才消费的位置继续消费呢？</p>
+<ul>
+<li>当消费者处理完一批消息并提交偏移量时，会将偏移量信息写入到 <code>__consumer_offsets</code> 主题中。</li>
+<li>记录的键包括消费者组 ID、主题名称和分区号，值是该分区的最新偏移量。</li>
+<li>在消费者组重新平衡后，新分配到分区的消费者会从 <code>__consumer_offsets</code> 主题中读取对应的偏移量信息。</li>
+<li>由于使用了消费者组 ID、主题名称和分区号的组合键，新的消费者能够准确读取到该分区的最新提交偏移量。</li>
+</ul>
+<p>这些过程对于消费者都是透明的，并不需要代码手动操作。</p>
+<h3 id="分区分配策略"><a href="#分区分配策略" class="headerlink" title="分区分配策略"></a>分区分配策略</h3><p>消费者组的平衡过程中，分区和消费者没有强绑定关系，意味着某个分区之前由消费者A消费，也许之后会由消费者B消费。</p>
+<p>至于如何分配，是由Leader决定的，第一个加入组的消费者成为Leader（群主）。</p>
+<img src="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/97862877-0870-4c6a-8225-a6cac4690915.png" class="">
+
+<p>在 Apache Kafka 中，分区具体分配给组内消费者的过程是由消费者组协调器（称为群主）决定的。Kafka 提供了多种分区分配策略，以便更好地适应不同的使用场景和需求。主要的分配策略包括：</p>
+<ol>
+<li><p><strong>RangeAssignor（范围分配）</strong>：</p>
+<ul>
+<li>每个主题的分区列表按照范围进行划分，将连续的一组分区分配给一个消费者。</li>
+<li>如果有多个主题，每个主题独立进行分区分配。</li>
+<li>比如5分区3消费者，就是[1,2], [3,4], [5]</li>
+</ul>
+</li>
+<li><p><strong>RoundRobinAssignor（轮询）</strong>：</p>
+<ul>
+<li>将所有订阅的主题的分区视为一个统一的分区列表，按照轮询的方式将分区依次分配给消费者。</li>
+<li>这种策略通常能够实现较为均匀的分区分配，无论分区数和消费者数是否均匀。</li>
+</ul>
+</li>
+<li><p><strong>StickyAssignor（粘性）</strong>：</p>
+<ul>
+<li>第一次分配后，组成员保留分配给自己的分区信息</li>
+<li>尝试在每次再平衡时保持分区分配的稳定性，尽量减少分区的重新分配。</li>
+<li>有助于减少消费者的重新分配和重启开销。</li>
+</ul>
+</li>
+<li><p><strong>CooperativeStickyAssignor（优化粘性）</strong>：</p>
+<ul>
+<li>前面的基于EAGER协议，平衡时会让所有消费者放弃当前分区，关闭连接，清理资源，全部统一平衡。</li>
+<li>CooperativeStickyAssignor 使用COOPERATIVE协议，小规模平衡</li>
+<li>基于 StickyAssignor 进一步优化，减少在再平衡过程中的分区重新分配次</li>
+</ul>
+</li>
+<li><p><strong>Custom Assignor</strong>：</p>
+<ul>
+<li>用户可以实现自己的分区分配策略，只需实现 <code>org.apache.kafka.clients.consumer.ConsumerPartitionAssignor</code> 接口，并在配置中指定自定义的分配策略。</li>
+</ul>
+</li>
+</ol>
+<p>选择合适的分区分配策略取决于具体的使用场景和需求。例如，如果需要较高的分区分配稳定性，可以选择 StickyAssignor 或 CooperativeStickyAssignor；如果需要较为均匀的分区分配，可以选择 RoundRobinAssignor。</p>
+<p>配置分配策略时，可以在消费者配置中指定 <code>partition.assignment.strategy</code> 属性，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor</span><br><span class="line"><span class="comment">//or</span></span><br><span class="line">config.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, RoundRobinAssignor.class.getName());</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Leader选举"><a href="#Leader选举" class="headerlink" title="Leader选举"></a>Leader选举</h3><p>当一个新的消费者加入现有的消费者组时，Kafka 确实会触发消费者组的重新平衡（rebalance）。在重新平衡过程中，所有消费者会暂时断开与消费者组协调器的连接，然后重新加入消费者组。这是为了确保分区可以被均匀地重新分配给所有的消费者。</p>
+<ol>
+<li><p><strong>短暂中断</strong>：</p>
+<ul>
+<li>在重新平衡过程中，消费者组内的所有消费者会有一个短暂的中断期，这段时间内不会有消息被消费。</li>
+</ul>
+</li>
+<li><p><strong>负载均衡</strong>：</p>
+<ul>
+<li>重新平衡确保分区能够均匀地分配给所有活跃的消费者，实现负载均衡。</li>
+</ul>
+</li>
+<li><p><strong>领导者变化</strong>：</p>
+<ul>
+<li>领导者消费者可能会发生变化，但这不会影响消息消费的整体流程，只是内部管理机制的一部分。</li>
+</ul>
+</li>
+</ol>
+<p>一般来说，消费者组的消费者的<code>PARTITION_ASSIGNMENT_STRATEGY_CONFIG</code>策略都保持一致，因此leader的更换并不会改变分区分配策略。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Kafka Consumer</p><p><a href="https://xiamu-ssr.github.io/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/">https://xiamu-ssr.github.io/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-07-30</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/Kafka/">Kafka</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/Consumer/">Consumer</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/%E6%B6%88%E8%B4%B9%E8%80%85/">消费者</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Kafka 更多延伸讨论</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/"><span class="level-item">Kafka之存储设计</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "54ac5e924e7e24451e1f88f1568d3b1e",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#1-Consumer基本流程"><span class="level-left"><span class="level-item">1. Consumer基本流程</span></span></a></li><li><a class="level is-mobile" href="#2-数据消费偏移量问题"><span class="level-left"><span class="level-item">2. 数据消费偏移量问题</span></span></a></li><li><a class="level is-mobile" href="#3-事务级别的问题"><span class="level-left"><span class="level-item">3. 事务级别的问题</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Kafka-的事务机制"><span class="level-left"><span class="level-item">Kafka 的事务机制</span></span></a></li><li><a class="level is-mobile" href="#消费者的隔离级别"><span class="level-left"><span class="level-item">消费者的隔离级别</span></span></a></li></ul></li><li><a class="level is-mobile" href="#4-消费者组"><span class="level-left"><span class="level-item">4. 消费者组</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#分区分配策略"><span class="level-left"><span class="level-item">分区分配策略</span></span></a></li><li><a class="level is-mobile" href="#Leader选举"><span class="level-left"><span class="level-item">Leader选举</span></span></a></li></ul></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

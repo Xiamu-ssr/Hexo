@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>SpringCloud + Nacos配置文件加载顺序和优先级详解 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="在微服务架构中，合理地管理和理解配置文件的加载顺序与优先级对于确保应用的稳定性和灵活性至关重要。特别是在使用 Spring Cloud Alibaba Nacos 作为配置中心的场景下，这一点显得尤为重要。本文将基于一个具体的 bootstrap.yml 配置示例，深入探讨这些概念，并介绍如何通过 Nacos 配置实现本地配置的优先级设置。 一、加载顺序与优先级1. 示例配置首先，我们看一下示例的"><meta property="og:type" content="blog"><meta property="og:title" content="SpringCloud + Nacos配置文件加载顺序和优先级详解"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="在微服务架构中，合理地管理和理解配置文件的加载顺序与优先级对于确保应用的稳定性和灵活性至关重要。特别是在使用 Spring Cloud Alibaba Nacos 作为配置中心的场景下，这一点显得尤为重要。本文将基于一个具体的 bootstrap.yml 配置示例，深入探讨这些概念，并介绍如何通过 Nacos 配置实现本地配置的优先级设置。 一、加载顺序与优先级1. 示例配置首先，我们看一下示例的"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/1718889416396.png"><meta property="article:published_time" content="2024-01-31T10:39:02.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.282Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="java"><meta property="article:tag" content="spring boot"><meta property="article:tag" content="后端"><meta property="article:tag" content="spring cloud"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/1718889416396.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/"},"headline":"SpringCloud + Nacos配置文件加载顺序和优先级详解","image":["https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/1718889416396.png"],"datePublished":"2024-01-31T10:39:02.000Z","dateModified":"2024-08-11T07:21:48.282Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"在微服务架构中，合理地管理和理解配置文件的加载顺序与优先级对于确保应用的稳定性和灵活性至关重要。特别是在使用 Spring Cloud Alibaba Nacos 作为配置中心的场景下，这一点显得尤为重要。本文将基于一个具体的 bootstrap.yml 配置示例，深入探讨这些概念，并介绍如何通过 Nacos 配置实现本地配置的优先级设置。 一、加载顺序与优先级1. 示例配置首先，我们看一下示例的"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/1718889416396.png" alt="SpringCloud + Nacos配置文件加载顺序和优先级详解"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-01-31T10:39:02.000Z" title="1/31/2024, 10:39:02 AM">2024-01-31</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.282Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"> Xiamu </span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Nacos/">Nacos</a></span><span class="level-item">5 分钟读完 (大约756个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">SpringCloud + Nacos配置文件加载顺序和优先级详解</h1><div class="content"><p>在微服务架构中，合理地管理和理解配置文件的加载顺序与优先级对于确保应用的稳定性和灵活性至关重要。特别是在使用 <code>Spring Cloud Alibaba Nacos</code> 作为配置中心的场景下，这一点显得尤为重要。本文将基于一个具体的 <code>bootstrap.yml</code> 配置示例，深入探讨这些概念，并介绍如何通过 Nacos 配置实现本地配置的优先级设置。</p>
+<h1 id="一、加载顺序与优先级"><a href="#一、加载顺序与优先级" class="headerlink" title="一、加载顺序与优先级"></a>一、加载顺序与优先级</h1><h2 id="1-示例配置"><a href="#1-示例配置" class="headerlink" title="1. 示例配置"></a>1. 示例配置</h2><p>首先，我们看一下示例的 <code>bootstrap.yml</code> 配置：</p>
+<figure class="highlight plaintext"><figcaption><span>language-yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: content-api</span><br><span class="line">  cloud:</span><br><span class="line">    nacos:</span><br><span class="line">      server-addr: 192.168.101.65:8848</span><br><span class="line">      discovery:</span><br><span class="line">        namespace: dev</span><br><span class="line">        group: xuecheng-plus-project</span><br><span class="line">      config:</span><br><span class="line">        namespace: dev</span><br><span class="line">        group: xuecheng-plus-project</span><br><span class="line">        file-extension: yaml</span><br><span class="line">        refresh-enabled: true</span><br><span class="line">        extension-configs:</span><br><span class="line">          - data-id: content-service-$&#123;</span><br><span class="line">   spring.profiles.active&#125;.yaml</span><br><span class="line">            group: xuecheng-plus-project</span><br><span class="line">            refresh: true</span><br><span class="line">        shared-configs:</span><br><span class="line">          - data-id: swagger-$&#123;</span><br><span class="line">   spring.profiles.active&#125;.yaml</span><br><span class="line">            group: xuecheng-plus-common</span><br><span class="line">            refresh: true</span><br><span class="line">          - data-id: logging-$&#123;</span><br><span class="line">   spring.profiles.active&#125;.yaml</span><br><span class="line">            group: xuecheng-plus-common</span><br><span class="line">            refresh: true</span><br><span class="line">  profiles:</span><br><span class="line">    active: dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-配置文件分类"><a href="#2-配置文件分类" class="headerlink" title="2. 配置文件分类"></a>2. 配置文件分类</h2><p>在 <code>Spring Cloud Alibaba Nacos</code> 环境中，我们主要遇到以下类型的配置文件：</p>
+<ol>
+<li><p><strong>本地配置文件</strong>：</p>
+<ul>
+<li><code>bootstrap.yml</code> &#x2F; <code>bootstrap.yaml</code></li>
+<li><code>application.yml</code> &#x2F; <code>application.yaml</code></li>
+</ul>
+</li>
+<li><p><strong>Nacos 配置中心的配置文件</strong>：</p>
+<ul>
+<li>共享配置文件 (<code>shared-configs</code>)</li>
+<li>扩展配置文件 (<code>extension-configs</code>)</li>
+<li>项目应用名配置文件 (<code>$&#123;spring.application.name&#125;.yaml</code> &#x2F; <code>.properties</code>)</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-加载顺序"><a href="#3-加载顺序" class="headerlink" title="3. 加载顺序"></a>3. 加载顺序</h2><ol>
+<li>**<code>bootstrap.yml</code> &#x2F; <code>bootstrap.yaml</code>**：首先加载，用于配置应用的启动环境。</li>
+<li><strong>Nacos 配置中心的配置文件</strong> ：<ul>
+<li>先加载 <strong>共享配置文件</strong> (<code>shared-configs</code>)</li>
+<li>然后是 <strong>扩展配置文件</strong> (<code>extension-configs</code>)</li>
+<li>最后是 <strong>项目应用名配置文件</strong> (<code>$&#123;spring.application.name&#125;.yaml</code> &#x2F; <code>.properties</code>)</li>
+</ul>
+</li>
+<li>**<code>application.yml</code> &#x2F; <code>application.yaml</code>**：在 Nacos 配置加载之后。</li>
+</ol>
+<h2 id="4-优先级"><a href="#4-优先级" class="headerlink" title="4. 优先级"></a>4. 优先级</h2><ol>
+<li><strong>项目应用名配置文件</strong>：具有最高优先级。</li>
+<li><strong>扩展配置文件</strong>：次之，覆盖共享配置。</li>
+<li><strong>共享配置文件</strong>：优先级低于扩展配置。</li>
+<li>**本地 <code>application.yml</code> &#x2F; <code>application.yaml</code>**：优先级低于所有从 Nacos 加载的配置。</li>
+<li>**本地 <code>bootstrap.yml</code> &#x2F; <code>bootstrap.yaml</code>**：优先级最低。</li>
+</ol>
+<h1 id="二、本地配置优先的设置"><a href="#二、本地配置优先的设置" class="headerlink" title="二、本地配置优先的设置"></a>二、本地配置优先的设置</h1><p>在 <code>Nacos</code> 中，可以通过特定的配置来设置本地配置优先。这可以在 <code>bootstrap.yml</code> 或 <code>application.yml</code> 文件中设置：</p>
+<figure class="highlight plaintext"><figcaption><span>language-yaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  cloud:</span><br><span class="line">    config:</span><br><span class="line">      override-none: true</span><br></pre></td></tr></table></figure>
+
+<p>当 <code>override-none</code> 设置为 <code>true</code> 时，本地配置文件 (<code>application.yml</code> &#x2F; <code>application.yaml</code>) 将具有最高的优先级，即使这些配置在 Nacos 中也有定义。这种设置适用于需要在不同环境中覆盖远程配置中心配置的场景。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>了解和正确应用 <code>Spring Cloud Alibaba Nacos</code> 中配置文件的加载顺序和优先级，对于确保微服务的正确运行至关重要。此外，通过配置 <code>override-none</code> 为 <code>true</code>，可以灵活地实现本地配置优先的需求，进一步增强了配置管理的灵活性。这些特性使得 Spring Cloud Alibaba Nacos 成为管理微服务配置的强大工具。  </p>
+<img src="/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/1718889416396.png" class="" title="This is an example image">
+
+</div><div class="article-licensing box"><div class="licensing-title"><p>SpringCloud + Nacos配置文件加载顺序和优先级详解</p><p><a href="https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/">https://xiamu-ssr.github.io/Hexo/2024/01/31/2024-H1/2024-01-31-10-39-02/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-01-31</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/java/">java</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/spring-boot/">spring boot</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/spring-cloud/">spring cloud</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2024/01/31/2024-H1/2024-01-31-13-21-00/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">SpringCloud Gateway(4.1.0) 返回503：原因分析与解决方案</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2024/01/27/2024-H1/2024-01-27-22-43-32/"><span class="level-item">MybatisPlus二级映射和关联对象ResultMap</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "df4c321b6d173dbee926573cb52e0951",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#一、加载顺序与优先级"><span class="level-left"><span class="level-item">一、加载顺序与优先级</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-示例配置"><span class="level-left"><span class="level-item">1. 示例配置</span></span></a></li><li><a class="level is-mobile" href="#2-配置文件分类"><span class="level-left"><span class="level-item">2. 配置文件分类</span></span></a></li><li><a class="level is-mobile" href="#3-加载顺序"><span class="level-left"><span class="level-item">3. 加载顺序</span></span></a></li><li><a class="level is-mobile" href="#4-优先级"><span class="level-left"><span class="level-item">4. 优先级</span></span></a></li></ul></li><li><a class="level is-mobile" href="#二、本地配置优先的设置"><span class="level-left"><span class="level-item">二、本地配置优先的设置</span></span></a></li><li><a class="level is-mobile" href="#结论"><span class="level-left"><span class="level-item">结论</span></span></a></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="1. Sender发送数据Sender线程负责将已经在RecordAccumulator中准备好的消息批次发送到Kafka集群。虽然消息在RecordAccumulator中是按照分区组织的，但Sender线程在发送这些消息时，会按照broker而不是分区来组织发送。这有助于提高发送效率和减少网络开销。 1. 发送数据的详细过程： 拉取批次：Sender线程从RecordAccumulator"><meta property="og:type" content="blog"><meta property="og:title" content="Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="1. Sender发送数据Sender线程负责将已经在RecordAccumulator中准备好的消息批次发送到Kafka集群。虽然消息在RecordAccumulator中是按照分区组织的，但Sender线程在发送这些消息时，会按照broker而不是分区来组织发送。这有助于提高发送效率和减少网络开销。 1. 发送数据的详细过程： 拉取批次：Sender线程从RecordAccumulator"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover10.png"><meta property="article:published_time" content="2024-07-16T20:42:34.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.502Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="Kafka"><meta property="article:tag" content="生产者"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover10.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/"},"headline":"Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区","image":["https://xiamu-ssr.github.io/Hexo/gallery/defaultCover10.png"],"datePublished":"2024-07-16T20:42:34.000Z","dateModified":"2024-08-11T07:21:48.502Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"1. Sender发送数据Sender线程负责将已经在RecordAccumulator中准备好的消息批次发送到Kafka集群。虽然消息在RecordAccumulator中是按照分区组织的，但Sender线程在发送这些消息时，会按照broker而不是分区来组织发送。这有助于提高发送效率和减少网络开销。 1. 发送数据的详细过程： 拉取批次：Sender线程从RecordAccumulator"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/gallery/defaultCover10.png" alt="Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-16T20:42:34.000Z" title="7/16/2024, 8:42:34 PM">2024-07-16</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.502Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">7 分钟读完 (大约1021个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区</h1><div class="content"><img src="/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/347641ac-0e12-44aa-aa18-e82672799293.png" class="">
+
+<h1 id="1-Sender发送数据"><a href="#1-Sender发送数据" class="headerlink" title="1. Sender发送数据"></a>1. Sender发送数据</h1><p><code>Sender</code>线程负责将已经在<code>RecordAccumulator</code>中准备好的消息批次发送到Kafka集群。虽然消息在<code>RecordAccumulator</code>中是按照分区组织的，但<code>Sender</code>线程在发送这些消息时，会按照broker而不是分区来组织发送。这有助于提高发送效率和减少网络开销。</p>
+<h3 id="1-发送数据的详细过程："><a href="#1-发送数据的详细过程：" class="headerlink" title="1. 发送数据的详细过程："></a>1. 发送数据的详细过程：</h3><ol>
+<li><p><strong>拉取批次</strong>：<code>Sender</code>线程从<code>RecordAccumulator</code>中拉取已准备好发送的消息批次。这些批次可能来自多个分区。</p>
+</li>
+<li><p><strong>按broker组织批次</strong>：<code>Sender</code>线程会将这些批次按目标broker进行组织，因为一个broker通常负责多个分区的消息处理。这个过程涉及以下步骤：</p>
+<ul>
+<li>确定每个分区的leader broker。</li>
+<li>将属于同一个broker的所有分区的批次组合在一起。</li>
+</ul>
+</li>
+<li><p><strong>发送请求</strong>：<code>Sender</code>线程会为每个broker创建一个或多个Produce请求（ProduceRequest），然后通过网络将这些请求发送到对应的broker。这些请求包含了该broker负责的所有分区的消息批次。</p>
+</li>
+<li><p><strong>处理响应</strong>：<code>Sender</code>线程会等待broker的响应。响应中包含了每个分区的消息是否成功写入的信息。</p>
+<ul>
+<li>如果某个分区的消息写入失败，<code>Sender</code>线程会根据重试机制重试发送这些消息。</li>
+<li>如果所有消息都成功写入，<code>Sender</code>线程会从<code>RecordAccumulator</code>中移除这些消息批次。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-关键参数配置"><a href="#2-关键参数配置" class="headerlink" title="2. 关键参数配置"></a>2. 关键参数配置</h3><p>以下是一些关键参数，可以影响<code>Sender</code>线程的行为：</p>
+<ul>
+<li><code>max.in.flight.requests.per.connection</code>：每个连接允许的最大未完成请求数。默认值为5。如果这个值过大，可能会导致消息重排序。</li>
+<li><code>request.timeout.ms</code>：请求超时时间。默认值为30秒。如果broker在此时间内没有响应，<code>Sender</code>线程会重试或失败。</li>
+<li><code>retries</code>：重试次数。默认值为0。指定<code>Sender</code>线程在发送消息失败时的重试次数。</li>
+<li><code>retry.backoff.ms</code>：重试间隔时间。默认值为100ms。指定每次重试之间的等待时间。</li>
+</ul>
+<p>通过这些配置，Kafka生产者可以在不同的网络条件和负载下优化消息发送的效率和可靠性。</p>
+<p>在Kafka生产者的<code>Sender</code>线程工作流程中，如果一次任务中包含了来自多个分区的批次，并且这些批次涉及到多个broker，那么<code>Sender</code>线程会分别向这些broker发送请求</p>
+<h1 id="2-在途请求缓存区"><a href="#2-在途请求缓存区" class="headerlink" title="2. 在途请求缓存区"></a>2. 在途请求缓存区</h1><ul>
+<li><p><strong>存储在途请求</strong>：当<code>Sender</code>线程将消息批次发送到broker后，这些请求会存储在在途请求缓存区中，直到收到broker的确认响应。这个缓存区的大小由配置参数<code>max.in.flight.requests.per.connection</code>决定。</p>
+</li>
+<li><p><strong>重试机制</strong>：如果某个请求在指定时间内没有收到响应，生产者会根据配置的重试机制重新发送这些请求。重试机制配置参数包括<code>retries</code>和<code>retry.backoff.ms</code>。</p>
+</li>
+<li><p><strong>顺序保证</strong>：<code>max.in.flight.requests.per.connection</code>参数设置了每个连接（每个生产者和Kafka的连接）允许的最大未完成请求数。默认值是5。如果这个值设置过大，可能会导致消息重排序问题，特别是在启用了重试机制时。设置合适的值可以平衡并发性能和消息顺序保证。</p>
+</li>
+<li><p><strong>资源管理</strong>：在途请求缓存区的大小会影响生产者的内存使用和性能。如果在途请求过多，可能会占用大量内存资源，导致生产者性能下降。因此，合理设置这个缓存区的大小是优化生产者性能的关键。</p>
+</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区</p><p><a href="https://xiamu-ssr.github.io/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/">https://xiamu-ssr.github.io/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-07-16</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/Kafka/">Kafka</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/%E7%94%9F%E4%BA%A7%E8%80%85/">生产者</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2024/07/17/2024-H2/2024-07-17-21-37-28/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Kafka Producer之消息异步发送和同步发送</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/"><span class="level-item">Kafka Producer发送消息流程之分区器和数据收集器</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "c17e0eb044b4620920b99f587e2ceb2b",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#1-Sender发送数据"><span class="level-left"><span class="level-item">1. Sender发送数据</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-发送数据的详细过程："><span class="level-left"><span class="level-item">1. 发送数据的详细过程：</span></span></a></li><li><a class="level is-mobile" href="#2-关键参数配置"><span class="level-left"><span class="level-item">2. 关键参数配置</span></span></a></li></ul></li><li><a class="level is-mobile" href="#2-在途请求缓存区"><span class="level-left"><span class="level-item">2. 在途请求缓存区</span></span></a></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

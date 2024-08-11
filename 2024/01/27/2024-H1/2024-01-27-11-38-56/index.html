@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>SpringBoot注解@GetMapping处理Get请求 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="一、如何从URL中获取参数当你想从URL中获取名为courseId的参数时，可以使用@GetMapping(&amp;quot;&amp;#x2F;course&amp;#x2F;&amp;#123;courseId&amp;#125;&amp;quot;)和@GetMapping(&amp;quot;&amp;#x2F;course&amp;quot;)两种办法，主要体现在URL模式和如何获取参数上。  使用@GetMapping(&amp;quot;&amp;#x2F;course&amp;#x2F;&amp;#123;courseId&amp;amp;#12"><meta property="og:type" content="blog"><meta property="og:title" content="SpringBoot注解@GetMapping处理Get请求"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="一、如何从URL中获取参数当你想从URL中获取名为courseId的参数时，可以使用@GetMapping(&amp;quot;&amp;#x2F;course&amp;#x2F;&amp;#123;courseId&amp;#125;&amp;quot;)和@GetMapping(&amp;quot;&amp;#x2F;course&amp;quot;)两种办法，主要体现在URL模式和如何获取参数上。  使用@GetMapping(&amp;quot;&amp;#x2F;course&amp;#x2F;&amp;#123;courseId&amp;amp;#12"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/1718889428792.png"><meta property="article:published_time" content="2024-01-27T11:38:56.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.254Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="java"><meta property="article:tag" content="spring boot"><meta property="article:tag" content="spring"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/1718889428792.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/"},"headline":"SpringBoot注解@GetMapping处理Get请求","image":["https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/1718889428792.png"],"datePublished":"2024-01-27T11:38:56.000Z","dateModified":"2024-08-11T07:21:48.254Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"一、如何从URL中获取参数当你想从URL中获取名为courseId的参数时，可以使用@GetMapping(&quot;&#x2F;course&#x2F;&#123;courseId&#125;&quot;)和@GetMapping(&quot;&#x2F;course&quot;)两种办法，主要体现在URL模式和如何获取参数上。  使用@GetMapping(&quot;&#x2F;course&#x2F;&#123;courseId&amp;#12"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/1718889428792.png" alt="SpringBoot注解@GetMapping处理Get请求"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-01-27T11:38:56.000Z" title="1/27/2024, 11:38:56 AM">2024-01-27</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.254Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"> Xiamu </span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringBoot2/">SpringBoot2</a></span><span class="level-item">13 分钟读完 (大约2023个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">SpringBoot注解@GetMapping处理Get请求</h1><div class="content"><h1 id="一、如何从URL中获取参数"><a href="#一、如何从URL中获取参数" class="headerlink" title="一、如何从URL中获取参数"></a>一、如何从URL中获取参数</h1><p>当你想从URL中获取名为<code>courseId</code>的参数时，可以使用<code>@GetMapping(&quot;/course/&#123;courseId&#125;&quot;)</code>和<code>@GetMapping(&quot;/course&quot;)</code>两种办法，主要体现在URL模式和如何获取参数上。</p>
+<ol>
+<li><p><strong>使用<code>@GetMapping(&quot;/course/&#123;courseId&#125;&quot;)</code></strong>:</p>
+<ul>
+<li><p>这种方式表示你正在定义一个REST风格的API，其中<code>&#123;courseId&#125;</code>是URL的一部分，通常被称为路径变量（path variable）。</p>
+</li>
+<li><p>你可以通过在方法的参数中加上<code>@PathVariable</code>注解来获取这个路径变量。例如：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course/&#123;courseId&#125;&quot;)</span><br><span class="line">public String getCourse(@PathVariable String courseId) &#123;</span><br><span class="line">       </span><br><span class="line">    // 使用courseId</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这种方式适合于当<code>courseId</code>是必需的，并且每个课程的URL都是唯一的情况。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>使用<code>@GetMapping(&quot;/course&quot;)</code></strong>:</p>
+<ul>
+<li><p>这种方式下，URL不直接包含<code>courseId</code>。相反，<code>courseId</code>可以作为请求参数（query parameter）来传递。</p>
+</li>
+<li><p>你可以通过在方法的参数中加上<code>@RequestParam</code>注解来获取这个请求参数。例如：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course&quot;)</span><br><span class="line">public String getCourse(@RequestParam String courseId) &#123;</span><br><span class="line">       </span><br><span class="line">    // 使用courseId</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这种方式适合于当你想要让<code>courseId</code>作为一个可选参数或者你希望从一组标准的URL中筛选特定课程的情况。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="二、获取多个参数"><a href="#二、获取多个参数" class="headerlink" title="二、获取多个参数"></a>二、获取多个参数</h1><p>当URL中有多个参数时，<code>@GetMapping(&quot;/course/&#123;courseId&#125;&quot;)</code>和<code>@GetMapping(&quot;/course&quot;)</code>的使用方式和它们之间的区别仍然基于路径变量（Path Variable）和请求参数（Request Parameter）的概念。这两种方法可以根据参数的性质和用途灵活组合使用。</p>
+<ol>
+<li><p><strong>使用路径变量（Path Variables）</strong>:</p>
+<ul>
+<li><p>当你使用<code>@GetMapping(&quot;/course/&#123;courseId&#125;&quot;)</code>并且URL中有多个参数时，这些参数通常是URL路径的一部分，并且每个参数都是资源定位的关键部分。</p>
+</li>
+<li><p>例如，如果你有一个URL像这样：<code>/course/&#123;courseId&#125;/module/&#123;moduleId&#125;</code>，你可以这样使用：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course/&#123;courseId&#125;/module/&#123;moduleId&#125;&quot;)</span><br><span class="line">public String getModule(@PathVariable String courseId, @PathVariable String moduleId) &#123;</span><br><span class="line">       </span><br><span class="line">    // 使用courseId和moduleId</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在这个例子中，<code>courseId</code>和<code>moduleId</code>都是路径的一部分，用来定位特定的资源。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>使用请求参数（Request Parameters）</strong>:</p>
+<ul>
+<li><p>当你使用<code>@GetMapping(&quot;/course&quot;)</code>并且URL中有多个参数时，这些参数通常作为URL的查询字符串（query string）。</p>
+</li>
+<li><p>例如，URL可能是这样的：<code>/course?courseId=123&amp;moduleId=456</code>，你可以这样使用：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course&quot;)</span><br><span class="line">public String getCourse(@RequestParam String courseId, @RequestParam String moduleId) &#123;</span><br><span class="line">       </span><br><span class="line">    // 使用courseId和moduleId</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在这个例子中，<code>courseId</code>和<code>moduleId</code>是作为查询字符串的一部分传递的，通常用于过滤、排序或其他非资源定位的操作。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="三、用一个类接收多个参数"><a href="#三、用一个类接收多个参数" class="headerlink" title="三、用一个类接收多个参数"></a>三、用一个类接收多个参数</h1><p>对于URL中包含多个请求参数（如 <code>/course?courseId=123&amp;moduleId=456</code>），你可以使用一个Java类来接收所有这些参数。这种方法可以使代码更加整洁，尤其是当处理具有多个参数的复杂请求时。</p>
+<p>这里是如何使用一个类来接收所有请求参数的示例：</p>
+<ol>
+<li><p><strong>定义一个类来表示请求参数</strong> :<br>首先，你需要定义一个类，其属性对应于URL中的请求参数。例如，对于参数<code>courseId</code>和<code>moduleId</code>，你可以定义如下类：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class CourseQuery &#123;</span><br><span class="line">     </span><br><span class="line">    private String courseId;</span><br><span class="line">    private String moduleId;</span><br><span class="line"></span><br><span class="line">    // 标准的getter和setter方法</span><br><span class="line">    public String getCourseId() &#123;</span><br><span class="line">     </span><br><span class="line">        return courseId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCourseId(String courseId) &#123;</span><br><span class="line">     </span><br><span class="line">        this.courseId = courseId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getModuleId() &#123;</span><br><span class="line">     </span><br><span class="line">        return moduleId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setModuleId(String moduleId) &#123;</span><br><span class="line">     </span><br><span class="line">        this.moduleId = moduleId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 可以添加构造函数、toString()等</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>在控制器方法中使用这个类</strong> :<br>接下来，在你的控制器方法中，你可以将这个类作为参数，并使用<code>@ModelAttribute</code>注解（或者不使用任何注解，因为Spring MVC会自动将请求参数绑定到类的属性上）：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course&quot;)</span><br><span class="line">public String getCourse(@ModelAttribute CourseQuery query) &#123;</span><br><span class="line">     </span><br><span class="line">    // 使用query.getCourseId()和query.getModuleId()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者，如果你不使用<code>@ModelAttribute</code>注解，Spring MVC默认也会按照相同的方式处理这个参数：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course&quot;)</span><br><span class="line">public String getCourse(CourseQuery query) &#123;</span><br><span class="line">     </span><br><span class="line">    // 使用query.getCourseId()和query.getModuleId()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>使用这种方式，你可以轻松地处理包含许多参数的复杂请求，同时保持代码的清晰和可维护性。这也让你能够在需要时对参数进行验证，比如使用Spring的验证框架来确保传入的参数满足特定条件。</p>
+<h1 id="四、疑问"><a href="#四、疑问" class="headerlink" title="四、疑问"></a>四、疑问</h1><blockquote>
+<p>Q：定义一个类来表示请求参数时，不需要使用@RequestParam吗？还是说@RequestParam用于简单的类型获取单个参数，比如String？</p>
+</blockquote>
+<p>在定义一个类来表示请求参数时，通常不需要在类的属性上使用<code>@RequestParam</code>注解。当你使用一个类来接收请求参数，Spring MVC的数据绑定机制会自动将请求中的参数名称映射到类的属性上。这是基于类的属性名和请求参数名的匹配来完成的。</p>
+<p><strong>使用类接收参数</strong>:</p>
+<ul>
+<li><p>当你有多个请求参数，并且想要将它们组织在一个类中时，你可以定义一个类，其属性与请求参数的名称相对应。</p>
+</li>
+<li><p>在控制器方法中，你可以使用这个类的实例作为参数，而无需为每个属性单独使用<code>@RequestParam</code>。Spring会自动处理参数到类属性的映射。</p>
+</li>
+<li><p>例如：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class CourseQuery &#123;</span><br><span class="line">     </span><br><span class="line">    private String courseId;</span><br><span class="line">    private String moduleId;</span><br><span class="line"></span><br><span class="line">    // getter和setter省略</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@GetMapping(&quot;/course&quot;)</span><br><span class="line">public String getCourse(CourseQuery query) &#123;</span><br><span class="line">     </span><br><span class="line">    // 使用query.getCourseId()和query.getModuleId()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>使用<code>@RequestParam</code></strong>:</p>
+<ul>
+<li><p><code>@RequestParam</code>通常用于获取单个请求参数，特别是当这个参数是一个简单类型（如<code>String</code>、<code>int</code>等）时。</p>
+</li>
+<li><p>当你只需要从请求中获取一个或少数几个参数，而不是一个复杂对象时，<code>@RequestParam</code>是一个很好的选择。</p>
+</li>
+<li><p>例如：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@GetMapping(&quot;/course&quot;)</span><br><span class="line">public String getCourse(@RequestParam String courseId, @RequestParam String moduleId) &#123;</span><br><span class="line">     </span><br><span class="line">    // 直接使用courseId和moduleId</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>总结来说，当处理包含多个参数的复杂请求时，使用一个类来封装这些参数可以使代码更加清晰和易于维护。而<code>@RequestParam</code>适用于处理更简单或直接的参数获取需求。在实际的应用中，你可以根据具体情况选择最适合的方法。</p>
+<blockquote>
+<p>Q:假如我已经有一个在&#x2F;course上的controller了，如下<br><code>@PostMapping(&quot;/course&quot;) public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto dto)</code><br>我还能继续写<br><code>@GetMapping(&quot;/course&quot;) public String getCourse(@RequestParam String courseId, @RequestParam String moduleId) </code><br>吗？</p>
+</blockquote>
+<p>是的，你完全可以在同一个控制器（Controller）中同时定义一个<code>@PostMapping</code>和一个<code>@GetMapping</code>方法，即使它们都映射到了相同的路径（如<code>/course</code>）。这是因为HTTP请求的方法类型（GET、POST等）作为映射的一部分，允许区分不同的操作。在你的例子中，一个方法用于处理POST请求，另一个用于处理GET请求。</p>
+<ol>
+<li><p><code>@PostMapping(&quot;/course&quot;)</code> 用于创建课程（通常是添加新资源），接收一个请求体（RequestBody）。</p>
+</li>
+<li><p><code>@GetMapping(&quot;/course&quot;)</code> 用于获取课程信息（通常是读取资源），接收URL中的请求参数（RequestParam）。</p>
+</li>
+</ol>
+<p>你的控制器可能看起来像这样：</p>
+<figure class="highlight plaintext"><figcaption><span>language-java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;/path-to-controller&quot;)</span><br><span class="line">public class CourseController &#123;</span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    @PostMapping(&quot;/course&quot;)</span><br><span class="line">    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto dto) &#123;</span><br><span class="line">   </span><br><span class="line">        // 创建课程的逻辑</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/course&quot;)</span><br><span class="line">    public String getCourse(@RequestParam String courseId, @RequestParam String moduleId) &#123;</span><br><span class="line">   </span><br><span class="line">        // 获取课程信息的逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这种配置中，当一个POST请求发送到<code>/course</code>时，<code>createCourseBase</code>方法将被调用；而当一个GET请求发送到<code>/course</code>时，带有请求参数的<code>getCourse</code>方法将被调用。</p>
+<p>这种方法是RESTful API设计中的常见实践，它允许你在同一路径上对资源进行不同类型的操作，同时保持了代码的清晰和逻辑的分离。</p>
+<img src="/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/1718889428792.png" class="" title="This is an example image">
+
+</div><div class="article-licensing box"><div class="licensing-title"><p>SpringBoot注解@GetMapping处理Get请求</p><p><a href="https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/">https://xiamu-ssr.github.io/Hexo/2024/01/27/2024-H1/2024-01-27-11-38-56/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-01-27</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/java/">java</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/spring-boot/">spring boot</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/spring/">spring</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2024/01/27/2024-H1/2024-01-27-16-06-04/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">SpringBoot不同的@Mapping使用</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2024/01/26/2024-H1/2024-01-26-21-44-24/"><span class="level-item">SpringBoot自定义全局异常处理器</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "52d93d4c192b57fd59c573281cc0ee19",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#一、如何从URL中获取参数"><span class="level-left"><span class="level-item">一、如何从URL中获取参数</span></span></a></li><li><a class="level is-mobile" href="#二、获取多个参数"><span class="level-left"><span class="level-item">二、获取多个参数</span></span></a></li><li><a class="level is-mobile" href="#三、用一个类接收多个参数"><span class="level-left"><span class="level-item">三、用一个类接收多个参数</span></span></a></li><li><a class="level is-mobile" href="#四、疑问"><span class="level-left"><span class="level-item">四、疑问</span></span></a></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

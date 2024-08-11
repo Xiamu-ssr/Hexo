@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#123456"><title>标签: Kafka - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="blog"><meta property="og:title" content="Hexo"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo"><meta property="og:site_name" content="Hexo"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/img/og_image.png"><meta property="article:author" content="Xiamu"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo"},"headline":"Hexo","image":["https://xiamu-ssr.github.io/Hexo/img/og_image.png"],"author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":""}</script><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/Hexo/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">Kafka</a></li></ul></nav></div></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/"><img class="fill" src="/Hexo/gallery/defaultCover4.png" alt="Kafka 更多延伸讨论"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-31T18:11:58.000Z" title="7/31/2024, 6:11:58 PM">2024-07-31</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.526Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">12 分钟读完 (大约1807个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/">Kafka 更多延伸讨论</a></p><div class="content"><h1 id="1-脑裂"><a href="#1-脑裂" class="headerlink" title="1. 脑裂"></a>1. 脑裂</h1><p>因为网络问题，导致kafka出现多个controller，那么剩余的broker应该认为谁是真正的controller呢？</p>
+<p>在zookeeper中引入<code>controllor_epoch</code>，表示<code>纪元</code>，每次controller变化，都会更新纪元值，这样其余的broker就能判断出来自controller的消息哪些是真controller，哪些是可以忽略的。</p>
+<h1 id="2-零拷贝"><a href="#2-零拷贝" class="headerlink" title="2. 零拷贝"></a>2. 零拷贝</h1><p>如下图是一种消息数据传输过程，需要把数据从磁盘中读取到页缓存，然后转化成用户态，再转移数据，再转化成内核态，在把数据传输，整个流程的效率是非常低的。</p>
+<img src="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/694d748b-85af-4c05-95d5-7eda2fbb8c11.png" class="">
+
+<p>优化之后，利用系统接口调用，让数据流转不需要再内核和用户之间转化，并且流程更短，复制次数更少，效率更高。</p>
+<p>零拷贝不是数据不经过拷贝，而是对于用户空间的Kafka来说，不需要拷贝。</p>
+<img src="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/b3bff40b-5f27-46ef-91d3-591af3967225.png" class="">
+
+
+
+<h1 id="3-顺写日志"><a href="#3-顺写日志" class="headerlink" title="3. 顺写日志"></a>3. 顺写日志</h1><p>顺写日志是一种数据结构，其中所有的写操作都是追加（append）到日志的末尾，而不是在日志中间进行随机写入。Kafka 的日志文件采用顺写日志结构，消息被顺序地追加到日志文件的末尾，每条消息都有一个唯一的偏移量（offset）用于标识其在日志中的位置。</p>
+<p>当生产者发送消息给 Kafka broker 时，这些消息会被顺序地追加到对应分区的日志文件末尾。顺序写入意味着磁盘的写操作可以以很高的速度完成，因为硬盘（尤其是传统的磁盘驱动器）对于顺序写入的性能非常高，远高于随机写入。</p>
+<p>消费者从 Kafka 读取消息时，是根据偏移量从日志中顺序读取消息的。由于日志文件是顺序写入的，消费者可以高效地顺序读取消息。消费者可以选择从特定的偏移量开始读取消息，以便实现灵活的消息处理。</p>
+<p>为了管理日志文件的大小，Kafka 将每个分区的日志文件分为多个段（segment）。当一个段达到预设的大小或时间限制时，会关闭当前段并创建一个新的段。这种分段机制使得 Kafka 能够高效地管理日志文件，同时支持日志的删除和压缩。</p>
+<p>Kafka 的顺写日志是其高性能和高可靠性的关键基础。通过将所有写入操作顺序追加到日志末尾，Kafka 能够高效地处理大量消息，并提供持久性保证和灵活的消费模式。顺写日志的结构使得 Kafka 在分布式环境中能够简单而高效地实现复制和故障恢复，同时支持日志保留和压缩，以适应不同的业务需求。</p>
+<h1 id="4-Kafka简单优化"><a href="#4-Kafka简单优化" class="headerlink" title="4. Kafka简单优化"></a>4. Kafka简单优化</h1><h3 id="1-操作系统"><a href="#1-操作系统" class="headerlink" title="1. 操作系统"></a>1. 操作系统</h3><p>Kafka 的网络客户端底层使用<code>Java NI0</code>的 Selector 方式，而 Selector 在 Linux 的实现是 epoll，在 Windows 上实现机制为 select。因此 Kafka 部署在 Linux 会有更高效的I&#x2F;0 性能。<br>数据在磁盘和网络之间进行传输时候，在 Linux 上可以享受到零拷贝机制带来的快捷和便利高效，而 Windows 在一定程度上会使用零拷贝操作。所以建议 Kafka 部署在<code>Linux</code>操作系统上。</p>
+<h3 id="2-磁盘选择"><a href="#2-磁盘选择" class="headerlink" title="2. 磁盘选择"></a>2. 磁盘选择</h3><p>Kafka 存储方式为顺序读写，机械硬盘的最大劣势在于随机读写慢。所以使用机械硬盘并不会造成性能低下。所以磁盘选用普通机械硬盘即可，Kafka自身已经有冗余机制，而且通过分区的设计，实现了负载均衡的功能。不做磁盘组raid阵列也是可以的。使用机械磁盘成本也低得多。</p>
+<h3 id="3-网络带宽"><a href="#3-网络带宽" class="headerlink" title="3. 网络带宽"></a>3. 网络带宽</h3><p>设计场景:如果机房为干兆带宽，我们需要在一小时内处理 1TB的数据，需要多少台kafka 服务器？</p>
+<p>由于带宽为干兆网，1000Mbps&#x3D;1Gbps，则每秒钟每个服务器能收到的数据量为1)1Gb&#x3D;1000Mb<br>假设 Kafka 占用整个服务器网络的 70%(其他 30%为别的服务预留)，则 Kafka可以使用到 700Mb的带宽，但是如果从常规角度考虑，我们不能总让 Katka顶满带宽峰值，所以需要预留出 2&#x2F;3 甚至 3&#x2F;4的资源，也就是说，Kanka 单台服务器使用带宽实际应为 700Mb&#x2F;3&#x3D;240Mb</p>
+<p>3)1小时需要处理 1TB 数据，1TB&#x3D;1024<em>1024</em>8M6-8000000Mb，则一秒钟处理数据量为:8000000Mb&#x2F;3600s&#x3D;2330Mb数据。<br>需要的服务器台数为:2330Mb&#x2F;240Mb~10 台。<br>考虑到消息的副本数如果为 2，则需要 20 台服务器，副本如果为 3，则需要 30台服务器。</p>
+<h3 id="4-内存配置"><a href="#4-内存配置" class="headerlink" title="4. 内存配置"></a>4. 内存配置</h3><p>Katka 运行过程中设计到的内存主要为<code> JVM的堆内存</code>和<code>操作系统的页缓存</code>，每个Broker 节点的堆内存建议 10-15G内存，而数据文件(默认为 1G)的 25%在内存就可以了综合上述，Kafka 在大数据场景下能够流畅稳定运行至少需要11G，建议安装Kafka的服务器节点的内存至少大于等于 16G。</p>
+<h3 id="5-CPU"><a href="#5-CPU" class="headerlink" title="5. CPU"></a>5. CPU</h3><p>在生产环境中，建议 CPU核数最少为 16 核，建议 32核以上，方可保证大数据环境中的 Katka集群正常处理与运行。</p>
+<h3 id="6-集群容错"><a href="#6-集群容错" class="headerlink" title="6. 集群容错"></a>6. 集群容错</h3><ul>
+<li><p>副本分配策略：一般建议2个及以上副本来保证高可用。</p>
+</li>
+<li><p>故障转移方案：Kafka某Broker故障后，会将其负责的分区副本转移到其他存活的Broker下，并自动选择新的主分区。</p>
+</li>
+<li><p>数据备份和恢复：kafka基于日志文件的存储方式，每个Broker上都有副本数据，可以通过配置策略来优化这部分。</p>
+</li>
+</ul>
+<h3 id="7-参数优化"><a href="#7-参数优化" class="headerlink" title="7. 参数优化"></a>7. 参数优化</h3><table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>默认参数值</th>
+<th>位置</th>
+<th>优化场景</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>num.network.threads</td>
+<td>3</td>
+<td>服务端</td>
+<td>低延迟</td>
+<td></td>
+</tr>
+<tr>
+<td>num.io.threads</td>
+<td>8</td>
+<td>服务端</td>
+<td>低延迟</td>
+<td></td>
+</tr>
+<tr>
+<td>socket.send.buffer.bytes</td>
+<td>102400 (100K)</td>
+<td>服务端</td>
+<td>高吞吐</td>
+<td></td>
+</tr>
+<tr>
+<td>socket.receive.buffer.bytes</td>
+<td>65536 (64K)</td>
+<td>服务端</td>
+<td>高吞吐场景</td>
+<td></td>
+</tr>
+<tr>
+<td>max.in.flight.requests.per.connection</td>
+<td>5</td>
+<td>生产端</td>
+<td>并等</td>
+<td></td>
+</tr>
+<tr>
+<td>buffer.memory</td>
+<td>33554432 (32M)</td>
+<td>生产端</td>
+<td>高吞吐</td>
+<td></td>
+</tr>
+<tr>
+<td>batch.size</td>
+<td>16384 (16K)</td>
+<td>生产端</td>
+<td>提高性能</td>
+<td></td>
+</tr>
+<tr>
+<td>linger.ms</td>
+<td>0</td>
+<td>生产端</td>
+<td>提高性能</td>
+<td></td>
+</tr>
+<tr>
+<td>fetch.min.bytes</td>
+<td>1</td>
+<td>消费端</td>
+<td>提高性能</td>
+<td>网络交互次数</td>
+</tr>
+<tr>
+<td>max.poll.records</td>
+<td>500</td>
+<td>消费端</td>
+<td>批量处理</td>
+<td>控制批量获取消息数量</td>
+</tr>
+<tr>
+<td>fetch.max.bytes</td>
+<td>57671680 (55M)</td>
+<td>消费端</td>
+<td>批量处理</td>
+<td>控制批量获取消息字节大小</td>
+</tr>
+</tbody></table>
+<h3 id="8-压缩算法"><a href="#8-压缩算法" class="headerlink" title="8. 压缩算法"></a>8. 压缩算法</h3><table>
+<thead>
+<tr>
+<th>压缩算法</th>
+<th>压缩比率</th>
+<th>压缩效率</th>
+<th>解压缩效率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>snappy</td>
+<td>2.073</td>
+<td>580m&#x2F;s</td>
+<td>2020m&#x2F;s</td>
+</tr>
+<tr>
+<td>lz4</td>
+<td>2.101</td>
+<td>800m&#x2F;s</td>
+<td>4220m&#x2F;s</td>
+</tr>
+<tr>
+<td>zstd</td>
+<td>2.884</td>
+<td>520m&#x2F;s</td>
+<td>1600m&#x2F;s</td>
+</tr>
+</tbody></table>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1></div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/"><img class="fill" src="/Hexo/gallery/defaultCover1.png" alt="Kafka Consumer"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-30T18:58:30.000Z" title="7/30/2024, 6:58:30 PM">2024-07-30</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.522Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">19 分钟读完 (大约2780个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/">Kafka Consumer</a></p><div class="content"><h1 id="1-Consumer基本流程"><a href="#1-Consumer基本流程" class="headerlink" title="1. Consumer基本流程"></a>1. Consumer基本流程</h1><ol>
+<li>初始化消费者</li>
+</ol>
+<p>首先，创建一个 Kafka 消费者实例，并设置必要的配置属性，例如 Kafka 集群地址、消费者组 ID、序列化器等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">props.put(<span class="string">&quot;bootstrap.servers&quot;</span>, <span class="string">&quot;localhost:9092&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;group.id&quot;</span>, <span class="string">&quot;my-group&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;key.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;value.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">props.put(<span class="string">&quot;isolation.level&quot;</span>, <span class="string">&quot;read_committed&quot;</span>); <span class="comment">// 可选，确保事务性消息的一致性</span></span><br><span class="line"></span><br><span class="line">KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> <span class="title class_">KafkaConsumer</span>&lt;&gt;(props);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>订阅主题</li>
+</ol>
+<p>创建消费者实例后，订阅一个或多个主题，以便消费者能够从这些主题中获取消息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumer.subscribe(Arrays.asList(<span class="string">&quot;my-topic&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>轮询消息</li>
+</ol>
+<p>消费者使用 <code>poll</code> 方法从 Kafka 中拉取消息。<code>poll</code> 方法会阻塞指定的时间，并返回拉取到的消息记录。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">    <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">        <span class="comment">// 处理消息</span></span><br><span class="line">        System.out.printf(<span class="string">&quot;offset = %d, key = %s, value = %s%n&quot;</span>, record.offset(), record.key(), record.value());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>处理消息</li>
+</ol>
+<p>在轮询到消息后，需要对消息进行处理。处理逻辑根据具体业务需求来实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">    <span class="comment">// 处理消息的业务逻辑</span></span><br><span class="line">    process(record);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>提交偏移量</li>
+</ol>
+<p>为了保证消息不会被重复处理或丢失，消费者需要提交已经处理过的消息偏移量。可以选择自动提交或手动提交偏移量。</p>
+<ul>
+<li><p><strong>自动提交</strong>：<br>自动提交偏移量由 <code>enable.auto.commit</code> 属性控制。如果设置为 <code>true</code>，消费者会定期自动提交偏移量。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">props.put(&quot;enable.auto.commit&quot;,</span> <span class="string">&quot;true&quot;);</span></span><br><span class="line"><span class="attr">props.put(&quot;auto.commit.interval.ms&quot;,</span> <span class="string">&quot;1000&quot;);</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>手动提交</strong>：<br>手动提交提供了更细粒度的控制。可以在处理完一批消息后手动提交偏移量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">            <span class="comment">// 处理消息</span></span><br><span class="line">            process(record);</span><br><span class="line">        &#125;</span><br><span class="line">        consumer.commitSync(); <span class="comment">// 同步提交偏移量</span></span><br><span class="line">        <span class="comment">// 或者使用异步提交</span></span><br><span class="line">        <span class="comment">// consumer.commitAsync();</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    consumer.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li>关闭消费者</li>
+</ol>
+<p>在应用程序关闭时，确保关闭消费者以释放资源。<code>close</code> 方法会确保任何未提交的偏移量被提交，并关闭网络连接。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumer.close();</span><br></pre></td></tr></table></figure>
+
+<p>以下是一个完整的消费者示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.Duration;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KafkaConsumerExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">        props.put(<span class="string">&quot;bootstrap.servers&quot;</span>, <span class="string">&quot;localhost:9092&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;group.id&quot;</span>, <span class="string">&quot;my-group&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;key.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;value.deserializer&quot;</span>, <span class="string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);</span><br><span class="line">        props.put(<span class="string">&quot;isolation.level&quot;</span>, <span class="string">&quot;read_committed&quot;</span>);</span><br><span class="line"></span><br><span class="line">        KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> <span class="title class_">KafkaConsumer</span>&lt;&gt;(props);</span><br><span class="line">        consumer.subscribe(Arrays.asList(<span class="string">&quot;my-topic&quot;</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">                ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(<span class="number">100</span>));</span><br><span class="line">                <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">                    System.out.printf(<span class="string">&quot;offset = %d, key = %s, value = %s%n&quot;</span>, record.offset(), record.key(), record.value());</span><br><span class="line">                &#125;</span><br><span class="line">                consumer.commitSync();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            consumer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-数据消费偏移量问题"><a href="#2-数据消费偏移量问题" class="headerlink" title="2. 数据消费偏移量问题"></a>2. 数据消费偏移量问题</h1><p>consumer默认会定时把当前消费到哪里的偏移量更新到Kafka 的内部主题 <code>__consumer_offsets</code> 中。这是一个特殊的主题，用于存储消费者组的偏移量信息。但是这会存在一些问题。比如</p>
+<ol>
+<li><p>默认每5000ms(由<code>auto.commit.interval.ms</code>决定)自动更新一次偏移量，当consumer这次拉取了100条数据，我消费到了第50条时consumer崩溃了，此时还未更新偏移量，下一次consumer启动后，会重复消费那50条数据。</p>
+</li>
+<li><p>即使换成手动提交，也存在同样的问题，消费到一半，consumer崩溃了，还没走到手动提交那一步，kafka记录的偏移量是过时的，所有下一次consumer重启，一样会重复消费。</p>
+</li>
+</ol>
+<h1 id="3-事务级别的问题"><a href="#3-事务级别的问题" class="headerlink" title="3. 事务级别的问题"></a>3. 事务级别的问题</h1><p>即使生产者使用了事务，却仍然可以导致consumer消费到不该消费的数据。</p>
+<h3 id="Kafka-的事务机制"><a href="#Kafka-的事务机制" class="headerlink" title="Kafka 的事务机制"></a>Kafka 的事务机制</h3><ol>
+<li><p><strong>事务性生产者</strong>：</p>
+<ul>
+<li>当一个事务性生产者开始一个事务时，它会生成一个唯一的 <code>transactional.id</code>，并通过 <code>beginTransaction()</code> 开始事务。</li>
+<li>所有在这个事务中的消息会被标记为事务性的，并且这些消息的状态（已提交或已中止）会被记录在事务日志中。</li>
+<li>当事务成功完成时，调用 <code>commitTransaction()</code>，所有的消息都会被原子地标记为已提交。</li>
+<li>如果事务失败，调用 <code>abortTransaction()</code>，所有在这个事务中的消息都会被标记为已中止，并不会对外可见。</li>
+</ul>
+</li>
+<li><p><strong>事务协调器</strong>：</p>
+<ul>
+<li>Kafka 的事务协调器负责管理事务的状态。</li>
+<li>它确保所有涉及的分区的一致性，并在事务提交或中止时更新事务日志。</li>
+</ul>
+</li>
+</ol>
+<h3 id="消费者的隔离级别"><a href="#消费者的隔离级别" class="headerlink" title="消费者的隔离级别"></a>消费者的隔离级别</h3><p>Kafka 消费者有两种隔离级别：</p>
+<ol>
+<li><p><strong>read_uncommitted</strong>（默认值）：</p>
+<ul>
+<li>在这种隔离级别下，消费者可以读取到所有的消息，包括未提交的事务性消息。</li>
+<li>这种隔离级别可能会导致消费者读取到事务中止后的消息，从而出现消费者消费到未提交或中止事务的数据的情况。</li>
+</ul>
+</li>
+<li><p><strong>read_committed</strong>：</p>
+<ul>
+<li>在这种隔离级别下，消费者只能读取到已提交的事务性消息。</li>
+<li>消费者会过滤掉未提交和已中止的事务消息，确保只消费到已经成功提交的消息。</li>
+<li>使用这种隔离级别可以确保端到端的精确一次语义。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consumerConfig.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, <span class="string">&quot;read_committed&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果消费者的隔离级别设置为 <code>read_uncommitted</code>，那么它会读取到所有消息，包括未提交的事务性消息。因此，即使事务中止，消费者也可能已经读取到这些消息。</p>
+<h1 id="4-消费者组"><a href="#4-消费者组" class="headerlink" title="4. 消费者组"></a>4. 消费者组</h1><p>一个消费者组只能订阅多个主题，组内的消费者共同消费这些主题。</p>
+<p><mark>一个分区只能由组内的一个消费者消费</mark>。</p>
+<p>如果消费者组的消费者数量大于topic的分区数，那么有的consumer将会空闲，用作备用。</p>
+<p>如果小于topic分区数，那么有的消费者会消费多个分区。</p>
+<p>当消费者组的消费者数量大于topic的分区时，此时有消费者崩溃，那么空闲的消费者会代替它，那么如何从刚才消费的位置继续消费呢？</p>
+<ul>
+<li>当消费者处理完一批消息并提交偏移量时，会将偏移量信息写入到 <code>__consumer_offsets</code> 主题中。</li>
+<li>记录的键包括消费者组 ID、主题名称和分区号，值是该分区的最新偏移量。</li>
+<li>在消费者组重新平衡后，新分配到分区的消费者会从 <code>__consumer_offsets</code> 主题中读取对应的偏移量信息。</li>
+<li>由于使用了消费者组 ID、主题名称和分区号的组合键，新的消费者能够准确读取到该分区的最新提交偏移量。</li>
+</ul>
+<p>这些过程对于消费者都是透明的，并不需要代码手动操作。</p>
+<h3 id="分区分配策略"><a href="#分区分配策略" class="headerlink" title="分区分配策略"></a>分区分配策略</h3><p>消费者组的平衡过程中，分区和消费者没有强绑定关系，意味着某个分区之前由消费者A消费，也许之后会由消费者B消费。</p>
+<p>至于如何分配，是由Leader决定的，第一个加入组的消费者成为Leader（群主）。</p>
+<img src="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/97862877-0870-4c6a-8225-a6cac4690915.png" class="">
+
+<p>在 Apache Kafka 中，分区具体分配给组内消费者的过程是由消费者组协调器（称为群主）决定的。Kafka 提供了多种分区分配策略，以便更好地适应不同的使用场景和需求。主要的分配策略包括：</p>
+<ol>
+<li><p><strong>RangeAssignor（范围分配）</strong>：</p>
+<ul>
+<li>每个主题的分区列表按照范围进行划分，将连续的一组分区分配给一个消费者。</li>
+<li>如果有多个主题，每个主题独立进行分区分配。</li>
+<li>比如5分区3消费者，就是[1,2], [3,4], [5]</li>
+</ul>
+</li>
+<li><p><strong>RoundRobinAssignor（轮询）</strong>：</p>
+<ul>
+<li>将所有订阅的主题的分区视为一个统一的分区列表，按照轮询的方式将分区依次分配给消费者。</li>
+<li>这种策略通常能够实现较为均匀的分区分配，无论分区数和消费者数是否均匀。</li>
+</ul>
+</li>
+<li><p><strong>StickyAssignor（粘性）</strong>：</p>
+<ul>
+<li>第一次分配后，组成员保留分配给自己的分区信息</li>
+<li>尝试在每次再平衡时保持分区分配的稳定性，尽量减少分区的重新分配。</li>
+<li>有助于减少消费者的重新分配和重启开销。</li>
+</ul>
+</li>
+<li><p><strong>CooperativeStickyAssignor（优化粘性）</strong>：</p>
+<ul>
+<li>前面的基于EAGER协议，平衡时会让所有消费者放弃当前分区，关闭连接，清理资源，全部统一平衡。</li>
+<li>CooperativeStickyAssignor 使用COOPERATIVE协议，小规模平衡</li>
+<li>基于 StickyAssignor 进一步优化，减少在再平衡过程中的分区重新分配次</li>
+</ul>
+</li>
+<li><p><strong>Custom Assignor</strong>：</p>
+<ul>
+<li>用户可以实现自己的分区分配策略，只需实现 <code>org.apache.kafka.clients.consumer.ConsumerPartitionAssignor</code> 接口，并在配置中指定自定义的分配策略。</li>
+</ul>
+</li>
+</ol>
+<p>选择合适的分区分配策略取决于具体的使用场景和需求。例如，如果需要较高的分区分配稳定性，可以选择 StickyAssignor 或 CooperativeStickyAssignor；如果需要较为均匀的分区分配，可以选择 RoundRobinAssignor。</p>
+<p>配置分配策略时，可以在消费者配置中指定 <code>partition.assignment.strategy</code> 属性，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor</span><br><span class="line"><span class="comment">//or</span></span><br><span class="line">config.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, RoundRobinAssignor.class.getName());</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Leader选举"><a href="#Leader选举" class="headerlink" title="Leader选举"></a>Leader选举</h3><p>当一个新的消费者加入现有的消费者组时，Kafka 确实会触发消费者组的重新平衡（rebalance）。在重新平衡过程中，所有消费者会暂时断开与消费者组协调器的连接，然后重新加入消费者组。这是为了确保分区可以被均匀地重新分配给所有的消费者。</p>
+<ol>
+<li><p><strong>短暂中断</strong>：</p>
+<ul>
+<li>在重新平衡过程中，消费者组内的所有消费者会有一个短暂的中断期，这段时间内不会有消息被消费。</li>
+</ul>
+</li>
+<li><p><strong>负载均衡</strong>：</p>
+<ul>
+<li>重新平衡确保分区能够均匀地分配给所有活跃的消费者，实现负载均衡。</li>
+</ul>
+</li>
+<li><p><strong>领导者变化</strong>：</p>
+<ul>
+<li>领导者消费者可能会发生变化，但这不会影响消息消费的整体流程，只是内部管理机制的一部分。</li>
+</ul>
+</li>
+</ol>
+<p>一般来说，消费者组的消费者的<code>PARTITION_ASSIGNMENT_STRATEGY_CONFIG</code>策略都保持一致，因此leader的更换并不会改变分区分配策略。</p>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/"><img class="fill" src="/Hexo/gallery/defaultCover2.png" alt="Kafka之存储设计"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-20T19:59:49.000Z" title="7/20/2024, 7:59:49 PM">2024-07-20</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.514Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">21 分钟读完 (大约3116个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/">Kafka之存储设计</a></p><div class="content"><h1 id="1-分区和副本的存储结构"><a href="#1-分区和副本的存储结构" class="headerlink" title="1. 分区和副本的存储结构"></a>1. 分区和副本的存储结构</h1><p>在一个多 broker 的 Kafka 集群中，topic 的分区和副本在各个 broker 上的存储文件夹分布如下：</p>
+<p>假设有以下设置：</p>
+<ul>
+<li>一个 Kafka 集群包含 3 个 broker（broker 0, broker 1, broker 2）。</li>
+<li>一个 topic <code>my-topic</code>，有 3 个分区（partition 0, partition 1, partition 2）。</li>
+<li>每个分区有 2 个副本。</li>
+</ul>
+<h3 id="1-分区和副本的分布"><a href="#1-分区和副本的分布" class="headerlink" title="1. 分区和副本的分布"></a>1. 分区和副本的分布</h3><p>Kafka 会在多个 broker 之间分配分区和副本。假设分配如下：</p>
+<ul>
+<li><code>partition 0</code>：<ul>
+<li>leader: broker 0</li>
+<li>follower: broker 1</li>
+</ul>
+</li>
+<li><code>partition 1</code>：<ul>
+<li>leader: broker 1</li>
+<li>follower: broker 2</li>
+</ul>
+</li>
+<li><code>partition 2</code>：<ul>
+<li>leader: broker 2</li>
+<li>follower: broker 0</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-存储目录结构"><a href="#2-存储目录结构" class="headerlink" title="2. 存储目录结构"></a>2. 存储目录结构</h3><p>每个 broker 的数据目录结构如下（假设 <code>log.dirs</code> 配置为 <code>/var/lib/kafka/data</code>）：</p>
+<ul>
+<li>Broker 0 (<code>/var/lib/kafka/data</code>)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/kafka/data</span><br><span class="line">└── my-topic-0  # partition 0 leader</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br><span class="line">└── my-topic-2  # partition 2 follower</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Broker 1 (<code>/var/lib/kafka/data</code>)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/kafka/data</span><br><span class="line">└── my-topic-0  # partition 0 follower</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br><span class="line">└── my-topic-1  # partition 1 leader</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Broker 2 (<code>/var/lib/kafka/data</code>)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/kafka/data</span><br><span class="line">└── my-topic-1  # partition 1 follower</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br><span class="line">└── my-topic-2  # partition 2 leader</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-文件描述"><a href="#3-文件描述" class="headerlink" title="3. 文件描述"></a>3. 文件描述</h3><p>每个分区目录包含多个文件：</p>
+<ul>
+<li><code>.log</code> 文件：存储实际的消息数据。</li>
+<li><code>.index</code> 文件：存储消息偏移量索引，以便快速定位消息。</li>
+<li><code>.timeindex</code> 文件：存储消息时间戳索引，以便基于时间进行查找。</li>
+</ul>
+<h1 id="2-相关配置"><a href="#2-相关配置" class="headerlink" title="2. 相关配置"></a>2. 相关配置</h1><p>在 Apache Kafka 中，消息到达 leader broker 后，实际上是先写入操作系统的页缓存，然后由操作系统决定何时将数据刷入磁盘。</p>
+<p>Kafka 允许通过配置参数来控制消息何时刷入磁盘。主要有以下几个重要的参数：</p>
+<ul>
+<li><code>log.flush.interval.messages</code>：指定在写入多少条消息后，强制将数据刷入磁盘。默认为 <code>Long.MAX_VALUE</code>，即不基于消息数量进行刷盘。</li>
+<li><code>log.flush.interval.ms</code>：指定时间间隔（以毫秒为单位），强制将数据刷入磁盘。默认为 <code>Long.MAX_VALUE</code>，即不基于时间进行刷盘。</li>
+<li><code>log.flush.scheduler.interval.ms</code>：默认值为 <code>3000</code> 毫秒。这只是一个检查的频率，实际的刷盘行为是由 <code>log.flush.interval.ms</code> 决定的。当调度器检查时，如果发现已经超过了 <code>log.flush.interval.ms</code> 设置的时间间隔，就会触发刷盘操作。</li>
+<li><code>log.segment.bytes</code>：控制单个日志段文件的最大大小，当一个日志段文件达到指定大小时，Kafka 会创建一个新的日志段文件，默认值1G。</li>
+<li><code>log.segment.delete.delay.ms</code>：控制日志段文件在被删除之前的延迟时间。当一个日志段文件被标记为删除后，Kafka 会等待指定的延迟时间才会真正删除该文件。这为潜在的恢复操作提供了缓冲时间。默认值60000 ms。</li>
+<li><code>log.roll.ms</code> 和 <code>log.roll.hours</code>：控制日志段文件的滚动时间间隔，无论日志段文件的大小如何，当达到指定的时间间隔时，Kafka 会创建一个新的日志段文件。<code>log.roll.hours</code>默认值168 小时（7 天）。</li>
+</ul>
+<h1 id="3-数据文件类型"><a href="#3-数据文件类型" class="headerlink" title="3. 数据文件类型"></a>3. 数据文件类型</h1><img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/8689aab7-3f63-48b0-9da6-279b832d5fb3.png" class="">
+
+<ol>
+<li><p><strong>.index 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的偏移量索引文件。它用于快速查找消息在日志文件中的位置。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000000.index</code></li>
+<li><strong>作用</strong>：通过这个索引文件，Kafka 可以快速定位消息在日志文件中的物理位置，以便更快地读取消息。</li>
+</ul>
+</li>
+<li><p><strong>.log 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的日志文件，存储实际的消息数据。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000000.log</code></li>
+<li><strong>作用</strong>：包含了生产者发送的消息内容。每个日志文件是一个分区的一部分，日志文件的命名表示消息的起始偏移量。</li>
+</ul>
+</li>
+<li><p><strong>.timeindex 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的时间戳索引文件，存储消息的时间戳索引。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000000.timeindex</code></li>
+<li><strong>作用</strong>：通过这个文件，Kafka 可以根据时间戳快速查找消息。这个文件对于实现基于时间的消息查找非常重要。</li>
+</ul>
+</li>
+<li><p><strong>.snapshot 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的快照文件，记录了日志段的元数据快照。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000016.snapshot</code></li>
+<li><strong>作用</strong>：用于恢复日志段的元数据，保证在崩溃恢复时能够正确地重建索引和时间戳数据。</li>
+</ul>
+</li>
+<li><p><strong>leader-epoch-checkpoint 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 用于记录 leader 选举周期的检查点文件。</li>
+<li><strong>作用</strong>：记录了分区的 leader 副本在不同的选举周期中的偏移量信息，帮助 Kafka 在故障恢复时确定正确的 leader 和消息偏移量。</li>
+</ul>
+</li>
+<li><p><strong>partition.metadata 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的分区元数据文件。</li>
+<li><strong>作用</strong>：存储分区的基本元数据信息，如分区的 leader、replica 列表等，用于分区的管理和协调。</li>
+</ul>
+</li>
+</ol>
+<h1 id="4-数据定位原理"><a href="#4-数据定位原理" class="headerlink" title="4. 数据定位原理"></a>4. 数据定位原理</h1><p>log等文件直接打开会乱码，使用以下工具可以解析到控制台。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-run-class.sh kafka.tools.DumpLogSegments --files /path/to/log-file.log --print-data-log</span><br></pre></td></tr></table></figure>
+
+<p>一个log文件里面有如下内容，</p>
+<img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/78daa8f7-08cb-4619-a443-f8a695d80de8.png" class="">
+
+<p>Kafka 日志文件中的内容并不是简单的按行排列的消息，而是采用了批处理（batch）的方式来存储消息。</p>
+<p>那么.index文件中可能是如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">offset: 3 position: 95</span><br></pre></td></tr></table></figure>
+
+<p><code>.index</code> 文件并不会为每一条消息都记录映射关系，而是每隔一定的字节数（由配置 <code>log.index.interval.bytes</code> 决定，默认4096）记录一次。</p>
+<img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/790a1cc5-af68-496b-a6ef-c1109a800389.png" class="">
+
+<p>如上图，</p>
+<h4 id="LogSegment-类"><a href="#LogSegment-类" class="headerlink" title="LogSegment 类"></a>LogSegment 类</h4><p><code>LogSegment</code> 主要负责一个段的日志管理。它包括：</p>
+<ul>
+<li><strong>日志文件（.log）</strong>：存储实际的消息数据。</li>
+<li><strong>偏移量索引文件（.index）</strong>：存储消息偏移量到物理位置的映射。</li>
+<li><strong>时间戳索引文件（.timeindex）</strong>：存储消息时间戳到物理位置的映射。</li>
+</ul>
+<h4 id="UnifiedLog-类"><a href="#UnifiedLog-类" class="headerlink" title="UnifiedLog 类"></a>UnifiedLog 类</h4><p><code>UnifiedLog</code> 管理一个分区的所有日志段。它通过跳表(<code>ConcurrentSkipListMap</code>)实现多个 <code>LogSegment</code> 日志的连续存储。<code>UnifiedLog</code> 的主要职责包括：</p>
+<ul>
+<li><strong>消息写入</strong>：将消息追加到当前活动的 <code>LogSegment</code> 中。如果当前日志段已满，滚动到新的日志段。</li>
+<li><strong>消息读取</strong>：根据偏移量或时间戳查找并读取消息，可能跨越多个日志段。</li>
+<li><strong>日志截断</strong>：根据保留策略（如日志保留时间或大小），截断过期或不需要的日志段。</li>
+<li><strong>数据恢复</strong>：在 broker 重启或故障恢复时，从日志段中恢复数据。</li>
+</ul>
+<p>如图，要查询偏移量为7的数据：</p>
+<ol>
+<li><p>通过跳表定位到对应的LogSegment</p>
+</li>
+<li><p>通过.index，经由二分法等高效定位指定偏移量的位置（如果没记录，则使用最大的小于偏移量位置）</p>
+</li>
+<li><p>按照指定位置快速定位到偏移量7的位置（或更前面一些）</p>
+</li>
+</ol>
+<h1 id="5-副本数据同步"><a href="#5-副本数据同步" class="headerlink" title="5. 副本数据同步"></a>5. 副本数据同步</h1><img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/d71f045e-15ec-40c9-b9e5-f23ee1141012.png" class="">
+
+<p>follower会定时向leader拉取数据。</p>
+<h4 id="HW水位线"><a href="#HW水位线" class="headerlink" title="HW水位线"></a>HW水位线</h4><img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/8c5a8142-9f47-4679-9255-478dc9d6c7aa.png" class="">
+
+<p>水位线（HW）是 Kafka 中每个分区的一个偏移量，它表示已经被所有同步副本（leader 和 follower）确认并复制的最高偏移量。</p>
+<ul>
+<li><p>数据一致性：HW 确保只有那些已经被所有同步副本成功复制的消息才会对消费者可见。这样可以防止数据不一致的问题，防止读取到未被完全复制的消息。</p>
+</li>
+<li><p>数据可靠性：HW 确保了在系统发生故障时，数据不会丢失，并且消费者读取到的数据是可靠的。如果设置了 <code>acks=all</code>，那么只有当所有同步副本都确认收到消息后，HW 才会更新。这确保了数据已经被多个副本存储，防止数据丢失。</p>
+</li>
+<li><p>故障恢复：当 leader 副本故障时，Kafka 会从同步副本中选举一个新的 leader 副本。新的 leader 会从 HW 位置开始，确保它拥有所有已提交的消息。</p>
+</li>
+<li><p>提高数据处理的可靠性和简化系统设计。生产者和消费者不需要处理复杂的数据一致性逻辑，只需依赖 Kafka 的 HW 机制。消费者读取的数据都是已经被确认的可靠数据，避免处理未确认数据带来的复杂性和错误。</p>
+</li>
+</ul>
+<h4 id="LEO末端偏移量"><a href="#LEO末端偏移量" class="headerlink" title="LEO末端偏移量"></a>LEO末端偏移量</h4><p>LEO（Log End Offset）是 Kafka 中的一个重要概念，代表一个分区的日志末端偏移量。具体来说，LEO 是指分区中下一条待写入消息的偏移量。</p>
+<h4 id="HW更新原理"><a href="#HW更新原理" class="headerlink" title="HW更新原理"></a>HW更新原理</h4><p>Leader会记录所有副本的LEO，以及HW。</p>
+<p>Follower会记录自己的LEO，以及HW。</p>
+<ol>
+<li><p>消息来到Leader，Leader更新自身LEO。</p>
+</li>
+<li><p>Follower向Leader同步数据，同步发送自身LEO，Leader更新LEO数据，并更新HW。</p>
+</li>
+<li><p>Leader将数据返回到Follower，并携带HW，Followe同步HW的值，并更新自身LEO。</p>
+</li>
+</ol>
+<p>如此反复，LEO和HW就在不断地更新。</p>
+<h1 id="6-数据清除"><a href="#6-数据清除" class="headerlink" title="6. 数据清除"></a>6. 数据清除</h1><ul>
+<li><code>log.retention.hours</code>，<code>log.retention.minutes</code>，<code>log.retention.ms</code>：日志保留的时间。超过这个时间的日志文件将被删除。<code>log.retention.hours</code>默认值为168（即 7 天）</li>
+<li><code>log.retention.check.interval.ms</code>：指定 Kafka Broker 多长时间检查一次日志文件，并根据配置的日志保留策略删除或压缩过期的日志文件。默认值：300000 毫秒（即 5 分钟）.</li>
+<li><code>log.retention.bytes</code>：每个分区保留的最大日志大小，超过这个大小的日志将被删除。默认值：-1（表示没有大小限制）。</li>
+<li><code>log.cleanup.policy</code>：日志清理策略，支持 delete 和 compact 两种模式。delete 模式表示根据保留策略删除旧日志，compact 模式表示日志压缩。默认值为delete。</li>
+<li>log.cleaner.min.cleanable.ratio：日志分段中可以被清理的最小比例。仅当分段中可清理的日志比例超过此值时，才会触发日志压缩。</li>
+<li>log.cleaner.delete.retention.ms：被标记为删除的记录在清理前的保留时间（以毫秒为单位）。在此时间之后，记录将从日志中永久删除。</li>
+</ul>
+<p>关于 <code>log.cleanup.policy=compact</code>，因为数据会丢失，所以这种策略只适用于保存数据最新状态的特殊场景。压缩步骤如下：</p>
+<ol>
+<li><p>标记旧数据：<br>Kafka会通过定期扫描日志分段（log segment）来查找每个key的最新值。对于同一个key，Kafka会将旧的值标记为删除（通常是通过在记录上设置一个删除标记）。</p>
+</li>
+<li><p>合并过程：<br>Kafka在后台运行一个合并过程（compaction process），这个过程会将分段中旧的key值对删除，保留最新的key值对。合并过程是增量进行的，Kafka并不会在每次写入消息时都触发这个过程。</p>
+</li>
+<li><p>实际删除：<br>被标记为删除的key值对并不会立即从日志分段中删除。Kafka的压缩过程是定期进行的，时间间隔和触发条件可以通过配置参数来调整。默认情况下，Kafka会在后台线程中异步执行这个压缩过程。</p>
+</li>
+</ol>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/19/2024-H2/2024-07-19-21-29-10/"><img class="fill" src="/Hexo/gallery/defaultCover7.png" alt="Kafka Producer之事务性"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-19T21:29:12.000Z" title="7/19/2024, 9:29:12 PM">2024-07-19</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.510Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">4 分钟读完 (大约645个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/19/2024-H2/2024-07-19-21-29-10/">Kafka Producer之事务性</a></p><div class="content"><p>事务性可以防止跨会话幂等性失效，同时也可以保证单个生产者的指定数据，要么全部成功要么全部失败，<mark>不限分区</mark>。不可以多个生产者共用相同的事务ID。</p>
+<h1 id="1-跨会话幂等性失效"><a href="#1-跨会话幂等性失效" class="headerlink" title="1. 跨会话幂等性失效"></a>1. 跨会话幂等性失效</h1><p>幂等性开启后，broker会对每个分区记录生产者状态，并且生产者具有PID，消息被标记为PID加上序列号，数据重复和有序都是在其基础之上运作的。</p>
+<p>生产者重启等因素会导致PID变化，导致幂等性短暂失效。</p>
+<h1 id="2-开启事务"><a href="#2-开启事务" class="headerlink" title="2. 开启事务"></a>2. 开启事务</h1><p>因为事务是基于幂等性的，所以幂等性的配置都要有。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.dragon.producer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.producer.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.common.serialization.StringSerializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutionException;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Future;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KafkaProducerTransactionTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException, ExecutionException &#123;</span><br><span class="line">        <span class="comment">//创建producer</span></span><br><span class="line">        HashMap&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;localhost:19092&quot;</span>);</span><br><span class="line">        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        <span class="comment">//配置acks等级</span></span><br><span class="line">        config.put(ProducerConfig.ACKS_CONFIG, <span class="string">&quot;-1&quot;</span>);</span><br><span class="line">        config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, <span class="literal">true</span>);</span><br><span class="line">        config.put(ProducerConfig.RETRIES_CONFIG, <span class="number">5</span>);</span><br><span class="line">        <span class="comment">// 把buffer改小一点，让测试数据组成更多batch</span></span><br><span class="line">        config.put(ProducerConfig.BATCH_SIZE_CONFIG, <span class="number">5</span>);</span><br><span class="line">        config.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, <span class="number">3000</span>);</span><br><span class="line">        <span class="comment">// 事务ID</span></span><br><span class="line">        config.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, <span class="string">&quot;my-tx-id&quot;</span>);</span><br><span class="line"></span><br><span class="line">        KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;String, String&gt;(config);</span><br><span class="line">        <span class="comment">//初始化事务</span></span><br><span class="line">        producer.initTransactions();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 开启事务</span></span><br><span class="line">            producer.beginTransaction();</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">                <span class="comment">//创建record</span></span><br><span class="line">                ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;String, String&gt;(</span><br><span class="line">                        <span class="string">&quot;test2&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;&quot;</span> + i,</span><br><span class="line">                        <span class="string">&quot;我是你爹&quot;</span> + i</span><br><span class="line">                );</span><br><span class="line">                <span class="comment">//发送record</span></span><br><span class="line">                Future&lt;RecordMetadata&gt; send = producer.send(record, <span class="keyword">new</span> <span class="title class_">Callback</span>() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onCompletion</span><span class="params">(RecordMetadata recordMetadata, Exception e)</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">&quot;回调信息：消息发送成功&quot;</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                System.out.println(<span class="string">&quot;发送数据&quot;</span>);</span><br><span class="line">                send.get();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 提交事务</span></span><br><span class="line">            producer.commitTransaction();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">            <span class="comment">// 中止事务</span></span><br><span class="line">            producer.abortTransaction();</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//关闭producer</span></span><br><span class="line">            producer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-事务流程原理"><a href="#3-事务流程原理" class="headerlink" title="3. 事务流程原理"></a>3. 事务流程原理</h1><img src="/Hexo/2024/07/19/2024-H2/2024-07-19-21-29-10/59187442-1378-4632-9f23-a694ca5bb743.png" class="">
+
+<ol>
+<li><p>查找联系事务管理器</p>
+</li>
+<li><p>根据设置的<code>TRANSACTIONAL_ID_CONFIG</code>计算PID，计算方式为哈希值%分区数量</p>
+</li>
+<li><p>初始化事务</p>
+</li>
+<li><p>将涉及到的分区信息发送给事务管理器，方便事务管理器管理和监控这些分区的事务状态。</p>
+</li>
+<li><p>生成数据，发送数据到对应Broker</p>
+</li>
+<li><p>对应Broker把分区信息发送给事务管理器，为了确认哪些分区确实已经收到了事务中的消息</p>
+</li>
+<li><p>对应Broker返回ACKS</p>
+</li>
+<li><p>生产者发起结束事务的请求</p>
+</li>
+<li><p>修改事务状态为准备提交</p>
+</li>
+<li><p>事务管理器将事务标记为成功或者失败，并通知对应broker。</p>
+</li>
+<li><p>修改事务状态为已提交</p>
+</li>
+</ol>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/18/2024-H2/2024-07-18-21-10-28/"><img class="fill" src="/Hexo/gallery/defaultCover1.png" alt="Kafka Producer之幂等性"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-18T21:10:29.000Z" title="7/18/2024, 9:10:29 PM">2024-07-18</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.510Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">3 分钟读完 (大约497个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/18/2024-H2/2024-07-18-21-10-28/">Kafka Producer之幂等性</a></p><div class="content"><p>幂等性通过消耗时间和性能的方式，解决乱序和重复问题。</p>
+<p>但是只能保证<mark>同一生产者在一个分区中的幂等性</mark>。</p>
+<h1 id="1-启用幂等性"><a href="#1-启用幂等性" class="headerlink" title="1. 启用幂等性"></a>1. 启用幂等性</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建producer</span></span><br><span class="line">HashMap&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;localhost:19092&quot;</span>);</span><br><span class="line">config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line"><span class="comment">//配置acks等级</span></span><br><span class="line">config.put(ProducerConfig.ACKS_CONFIG, <span class="string">&quot;-1&quot;</span>);</span><br><span class="line"><span class="comment">//启用幂等性</span></span><br><span class="line">config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 消息失败重试次数</span></span><br><span class="line">config.put(ProducerConfig.RETRIES_CONFIG, <span class="number">5</span>);</span><br><span class="line">config.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, <span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line">KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;String, String&gt;(config);</span><br></pre></td></tr></table></figure>
+
+<p>幂等性操作要求：</p>
+<ol>
+<li><p>ACKS &#x3D; -1</p>
+</li>
+<li><p>开启重试机制</p>
+</li>
+<li><p>在途请求缓冲区不能大于5</p>
+</li>
+</ol>
+<h1 id="2-底层变化"><a href="#2-底层变化" class="headerlink" title="2. 底层变化"></a>2. 底层变化</h1><p>消息会被标记，包含生产者ID和消息序列号。</p>
+<p>( 如果生产者重启，那么ID会变化，这会使得下图记录无效，幂等性短暂失效。)</p>
+<p>并且broker中的ProducerState会记录每个分区的生产者状态，包括最新5个消息的序列号。</p>
+<img src="/Hexo/2024/07/18/2024-H2/2024-07-18-21-10-28/f2512215-562e-4aaf-9f3d-a7572a4afe14.png" class="">
+
+
+
+<h1 id="3-数据不重复"><a href="#3-数据不重复" class="headerlink" title="3. 数据不重复"></a>3. 数据不重复</h1><p>消息来到broker分区，经由ProducerState的数据进行对比，</p>
+<ul>
+<li><p>重复则丢弃消息，返回ack。</p>
+</li>
+<li><p>否则Broker存储消息并返回ack。</p>
+</li>
+</ul>
+<h1 id="4-数据有序"><a href="#4-数据有序" class="headerlink" title="4. 数据有序"></a>4. 数据有序</h1><p>消息来到broker分区，经由ProducerState的数据进行对比，</p>
+<ul>
+<li>如果新消息的序列号是连续的，Broker会接受并存储该消息，然后更新最新序列号。</li>
+<li>如果新消息的序列号不连续，Broker会认为这是重复消息或乱序消息，根据配置，它可能会丢弃或拒绝该消息。</li>
+<li>无论消息被接受还是丢弃，Broker都会返回一个ack给生产者。</li>
+</ul>
+<p>不连续时可能拒绝多个消息，那么这些消息都会返回生产者重新发送，直到按顺序下一个消息到来，才存储并更新。</p>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/18/2024-H2/2024-07-18-21-02-23/"><img class="fill" src="/Hexo/gallery/defaultCover8.png" alt="Kafka Producer之数据重复和乱序问题"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-18T21:02:25.000Z" title="7/18/2024, 9:02:25 PM">2024-07-18</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.510Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">1 分钟读完 (大约182个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/18/2024-H2/2024-07-18-21-02-23/">Kafka Producer之数据重复和乱序问题</a></p><div class="content"><p>为了可靠性，Kafka有消息重试机制，但是同时也带来了2大问题</p>
+<h1 id="1-数据重复"><a href="#1-数据重复" class="headerlink" title="1. 数据重复"></a>1. 数据重复</h1><img src="/Hexo/2024/07/18/2024-H2/2024-07-18-21-02-23/1c77638a-b884-4001-ad32-d1fa073cb827.png" class="">
+
+<p>消息发送到broker后，broker记录消息数据到log中，但是由于网络问题，producer没有收到acks，于是再次发送消息。</p>
+<p>除此之外，也可能是其他场景，导致了消息的重复。</p>
+<h1 id="2-数据乱序"><a href="#2-数据乱序" class="headerlink" title="2. 数据乱序"></a>2. 数据乱序</h1><img src="/Hexo/2024/07/18/2024-H2/2024-07-18-21-02-23/fe4494ea-eeae-47f0-a1dc-f9998723e69e.png" class="">
+
+<p>如图，消息2、3发送到了broker，但是data1因为网络问题没有到broker，然后被producer重试了，第二次到了，但是顺序乱了。</p>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/17/2024-H2/2024-07-17-21-49-43/"><img class="fill" src="/Hexo/gallery/defaultCover3.png" alt="Kafka Producer之ACKS应答机制"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-17T21:49:45.000Z" title="7/17/2024, 9:49:45 PM">2024-07-17</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.506Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">5 分钟读完 (大约690个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/17/2024-H2/2024-07-17-21-49-43/">Kafka Producer之ACKS应答机制</a></p><div class="content"><img src="/Hexo/2024/07/17/2024-H2/2024-07-17-21-49-43/ef788352-3e6a-4635-a685-8cdff0716497.png" class="">
+
+<h1 id="1-应答机制"><a href="#1-应答机制" class="headerlink" title="1. 应答机制"></a>1. 应答机制</h1><p>异步发送的效率高，但是不安全，同步发送安全，但是效率低。</p>
+<p>无论哪一种，有一个关键的步骤叫做回调，也就是ACKS应答机制。</p>
+<p>其中ACKS也分为3个等级。默认等级是all。</p>
+<table>
+<thead>
+<tr>
+<th>等级</th>
+<th>效率</th>
+<th>安全</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>all（-1）</td>
+<td>效率低</td>
+<td>安全性高</td>
+</tr>
+<tr>
+<td>1</td>
+<td>效率中</td>
+<td>安全性中</td>
+</tr>
+<tr>
+<td>0</td>
+<td>效率高</td>
+<td>安全性低</td>
+</tr>
+</tbody></table>
+<h1 id="2-等级0"><a href="#2-等级0" class="headerlink" title="2. 等级0"></a>2. 等级0</h1><ul>
+<li>生产者发送消息到Kafka集群。</li>
+<li>消息进入网络发送队列。</li>
+<li>生产者立即返回（认为消息已发送），不等待任何Broker的确认。</li>
+</ul>
+<img src="/Hexo/2024/07/17/2024-H2/2024-07-17-21-49-43/e1dece08-26d7-4fa1-b5f8-66f57d2b6d23.png" class="">
+
+
+
+<h1 id="3-等级1"><a href="#3-等级1" class="headerlink" title="3. 等级1"></a>3. 等级1</h1><ul>
+<li>生产者发送消息到Kafka集群。</li>
+<li>Leader分区接收消息，将消息写入本地日志。</li>
+<li>Leader分区将消息同步到磁盘（如果配置了日志刷新）。</li>
+<li>Leader分区返回确认（ACK）给生产者。</li>
+<li>生产者收到ACK，继续处理下一条消息。</li>
+</ul>
+<img src="/Hexo/2024/07/17/2024-H2/2024-07-17-21-49-43/1ec3ee30-ae22-44fa-8c7a-ab4ff00b7d61.png" class="">
+
+
+
+<h1 id="4-等级all"><a href="#4-等级all" class="headerlink" title="4. 等级all"></a>4. 等级all</h1><ul>
+<li>生产者发送消息到Kafka集群。</li>
+<li>Leader分区接收消息，将消息写入本地日志。</li>
+<li>Leader分区将消息同步到磁盘（如果配置了日志刷新）。</li>
+<li>Leader分区将消息发送给所有同步副本（ISR）。</li>
+<li>每个同步副本（Follower）将消息写入本地日志并返回确认给Leader。</li>
+<li>Leader分区收到所有同步副本的确认后，返回ACK给生产者。</li>
+<li>生产者收到ACK，继续处理下一条消息。</li>
+</ul>
+<img src="/Hexo/2024/07/17/2024-H2/2024-07-17-21-49-43/2434704f-3d85-4e7d-9670-cce24dfcfadb.png" class="">
+
+<h1 id="5-设置等级"><a href="#5-设置等级" class="headerlink" title="5. 设置等级"></a>5. 设置等级</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建producer</span></span><br><span class="line">HashMap&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;localhost:19092&quot;</span>);</span><br><span class="line">config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line"><span class="comment">//配置acks等级</span></span><br><span class="line">config.put(ProducerConfig.ACKS_CONFIG, <span class="string">&quot;-1&quot;</span>);</span><br><span class="line"></span><br><span class="line">KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;String, String&gt;(config);</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-ISR"><a href="#6-ISR" class="headerlink" title="6. ISR"></a>6. ISR</h1><p>ISR的定义：</p>
+<ul>
+<li><strong>成员</strong>：ISR包括Leader和所有与Leader保持同步的Follower分区。保持同步的标准是Follower分区的日志不落后于Leader分区超过指定的时间（由<code>replica.lag.time.max.ms</code>配置）。</li>
+<li><strong>目的</strong>：确保在Leader发生故障时，可以迅速从ISR中选举一个新的Leader，从而保证分区的高可用性。</li>
+</ul>
+<p>ISR的动态调整：</p>
+<ul>
+<li>Kafka会动态调整ISR的成员。如果一个Follower分区落后于Leader超过一定的时间，Kafka会将其从ISR中移除。</li>
+<li>当该Follower分区重新追上Leader并满足同步标准时，Kafka会将其重新加入ISR。</li>
+</ul>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/17/2024-H2/2024-07-17-21-37-28/"><img class="fill" src="/Hexo/gallery/defaultCover9.png" alt="Kafka Producer之消息异步发送和同步发送"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-17T21:37:31.000Z" title="7/17/2024, 9:37:31 PM">2024-07-17</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.506Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">6 分钟读完 (大约898个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/17/2024-H2/2024-07-17-21-37-28/">Kafka Producer之消息异步发送和同步发送</a></p><div class="content"><img src="/Hexo/2024/07/17/2024-H2/2024-07-17-21-37-28/7f8665c5-171b-4867-9879-7296d7404e84.png" class="">
+
+<h1 id="1-异步发送"><a href="#1-异步发送" class="headerlink" title="1. 异步发送"></a>1. 异步发送</h1><p>Kafka默认就是异步发送，在Main线程中的多条消息，没有严格的先后顺序，Sender发送后就继续下一条，异步接受结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KafkaProducerCallbackTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="comment">//创建producer</span></span><br><span class="line">        HashMap&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;localhost:19092&quot;</span>);</span><br><span class="line">        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line"></span><br><span class="line">        KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;String, String&gt;(config);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="comment">//创建record</span></span><br><span class="line">            ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;String, String&gt;(</span><br><span class="line">                    <span class="string">&quot;test2&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;&quot;</span>+i,</span><br><span class="line">                    <span class="string">&quot;我是你爹&quot;</span>+i</span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//发送record</span></span><br><span class="line">            producer.send(record, <span class="keyword">new</span> <span class="title class_">Callback</span>() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onCompletion</span><span class="params">(RecordMetadata recordMetadata, Exception e)</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;回调信息：消息发送成功&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            System.out.println(<span class="string">&quot;发送数据&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭producer</span></span><br><span class="line">        producer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Main线程中，对于多条数据，下一条消息的发送并不等待上一条消息的确认，而是继续发送。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">2024-07-17 21:43:46.052 [kafka-producer-network-thread | producer-1] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=producer-1] Cluster ID: BqIgDGtwTeeusL_ygHtn2w</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">发送数据</span><br><span class="line">2024-07-17 21:43:46.075 [main] INFO  org.apache.kafka.clients.producer.KafkaProducer - [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 9223372036854775807 ms.</span><br><span class="line">2024-07-17 21:43:46.280 [kafka-producer-network-thread | producer-1] INFO  o.a.k.c.producer.internals.TransactionManager - [Producer clientId=producer-1] ProducerId set to 6000 with epoch 0</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">2024-07-17 21:43:46.569 [main] INFO  org.apache.kafka.common.metrics.Metrics - Metrics scheduler closed</span><br></pre></td></tr></table></figure>
+
+<p>可以看到先是main线程循环发送完了多条数据，然后再异步收到通知。</p>
+<h1 id="2-同步发送"><a href="#2-同步发送" class="headerlink" title="2. 同步发送"></a>2. 同步发送</h1><p>消息有严格的先后顺序，下一条消息必须等到上一条消息的回调确认后，再发送，这是一个<mark>效率极低</mark>的过程。</p>
+<p>按照流程图，上一条消息需要从生产者一直流转，多个步骤，到数据收集器，到Sender，最后还要等待回调确认，才可以开始下一条消息的流转。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KafkaProducerCallbackTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException, ExecutionException &#123;</span><br><span class="line">        <span class="comment">//创建producer</span></span><br><span class="line">        HashMap&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;localhost:19092&quot;</span>);</span><br><span class="line">        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line"></span><br><span class="line">        KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;String, String&gt;(config);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="comment">//创建record</span></span><br><span class="line">            ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;String, String&gt;(</span><br><span class="line">                    <span class="string">&quot;test2&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;&quot;</span>+i,</span><br><span class="line">                    <span class="string">&quot;我是你爹&quot;</span>+i</span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//发送record</span></span><br><span class="line">            Future&lt;RecordMetadata&gt; send = producer.send(record, <span class="keyword">new</span> <span class="title class_">Callback</span>() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onCompletion</span><span class="params">(RecordMetadata recordMetadata, Exception e)</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;回调信息：消息发送成功&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            System.out.println(<span class="string">&quot;发送数据&quot;</span>);</span><br><span class="line">            send.get();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭producer</span></span><br><span class="line">        producer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">2024-07-17 21:49:19.586 [kafka-producer-network-thread | producer-1] INFO  o.a.k.c.producer.internals.TransactionManager - [Producer clientId=producer-1] ProducerId set to 5000 with epoch 0</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">发送数据</span><br><span class="line">回调信息：消息发送成功</span><br><span class="line">2024-07-17 21:49:19.823 [main] INFO  org.apache.kafka.clients.producer.KafkaProducer - [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 9223372036854775807 ms.</span><br><span class="line">2024-07-17 21:49:19.838 [main] INFO  org.apache.kafka.common.metrics.Metrics - Metrics scheduler closed</span><br></pre></td></tr></table></figure>
+
+
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/"><img class="fill" src="/Hexo/gallery/defaultCover10.png" alt="Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-16T20:42:34.000Z" title="7/16/2024, 8:42:34 PM">2024-07-16</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.502Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">7 分钟读完 (大约1021个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/">Kafka Producer发送消息流程之Sender发送线程和在途请求缓存区</a></p><div class="content"><img src="/Hexo/2024/07/16/2024-H2/2024-07-16-20-42-33/347641ac-0e12-44aa-aa18-e82672799293.png" class="">
+
+<h1 id="1-Sender发送数据"><a href="#1-Sender发送数据" class="headerlink" title="1. Sender发送数据"></a>1. Sender发送数据</h1><p><code>Sender</code>线程负责将已经在<code>RecordAccumulator</code>中准备好的消息批次发送到Kafka集群。虽然消息在<code>RecordAccumulator</code>中是按照分区组织的，但<code>Sender</code>线程在发送这些消息时，会按照broker而不是分区来组织发送。这有助于提高发送效率和减少网络开销。</p>
+<h3 id="1-发送数据的详细过程："><a href="#1-发送数据的详细过程：" class="headerlink" title="1. 发送数据的详细过程："></a>1. 发送数据的详细过程：</h3><ol>
+<li><p><strong>拉取批次</strong>：<code>Sender</code>线程从<code>RecordAccumulator</code>中拉取已准备好发送的消息批次。这些批次可能来自多个分区。</p>
+</li>
+<li><p><strong>按broker组织批次</strong>：<code>Sender</code>线程会将这些批次按目标broker进行组织，因为一个broker通常负责多个分区的消息处理。这个过程涉及以下步骤：</p>
+<ul>
+<li>确定每个分区的leader broker。</li>
+<li>将属于同一个broker的所有分区的批次组合在一起。</li>
+</ul>
+</li>
+<li><p><strong>发送请求</strong>：<code>Sender</code>线程会为每个broker创建一个或多个Produce请求（ProduceRequest），然后通过网络将这些请求发送到对应的broker。这些请求包含了该broker负责的所有分区的消息批次。</p>
+</li>
+<li><p><strong>处理响应</strong>：<code>Sender</code>线程会等待broker的响应。响应中包含了每个分区的消息是否成功写入的信息。</p>
+<ul>
+<li>如果某个分区的消息写入失败，<code>Sender</code>线程会根据重试机制重试发送这些消息。</li>
+<li>如果所有消息都成功写入，<code>Sender</code>线程会从<code>RecordAccumulator</code>中移除这些消息批次。</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-关键参数配置"><a href="#2-关键参数配置" class="headerlink" title="2. 关键参数配置"></a>2. 关键参数配置</h3><p>以下是一些关键参数，可以影响<code>Sender</code>线程的行为：</p>
+<ul>
+<li><code>max.in.flight.requests.per.connection</code>：每个连接允许的最大未完成请求数。默认值为5。如果这个值过大，可能会导致消息重排序。</li>
+<li><code>request.timeout.ms</code>：请求超时时间。默认值为30秒。如果broker在此时间内没有响应，<code>Sender</code>线程会重试或失败。</li>
+<li><code>retries</code>：重试次数。默认值为0。指定<code>Sender</code>线程在发送消息失败时的重试次数。</li>
+<li><code>retry.backoff.ms</code>：重试间隔时间。默认值为100ms。指定每次重试之间的等待时间。</li>
+</ul>
+<p>通过这些配置，Kafka生产者可以在不同的网络条件和负载下优化消息发送的效率和可靠性。</p>
+<p>在Kafka生产者的<code>Sender</code>线程工作流程中，如果一次任务中包含了来自多个分区的批次，并且这些批次涉及到多个broker，那么<code>Sender</code>线程会分别向这些broker发送请求</p>
+<h1 id="2-在途请求缓存区"><a href="#2-在途请求缓存区" class="headerlink" title="2. 在途请求缓存区"></a>2. 在途请求缓存区</h1><ul>
+<li><p><strong>存储在途请求</strong>：当<code>Sender</code>线程将消息批次发送到broker后，这些请求会存储在在途请求缓存区中，直到收到broker的确认响应。这个缓存区的大小由配置参数<code>max.in.flight.requests.per.connection</code>决定。</p>
+</li>
+<li><p><strong>重试机制</strong>：如果某个请求在指定时间内没有收到响应，生产者会根据配置的重试机制重新发送这些请求。重试机制配置参数包括<code>retries</code>和<code>retry.backoff.ms</code>。</p>
+</li>
+<li><p><strong>顺序保证</strong>：<code>max.in.flight.requests.per.connection</code>参数设置了每个连接（每个生产者和Kafka的连接）允许的最大未完成请求数。默认值是5。如果这个值设置过大，可能会导致消息重排序问题，特别是在启用了重试机制时。设置合适的值可以平衡并发性能和消息顺序保证。</p>
+</li>
+<li><p><strong>资源管理</strong>：在途请求缓存区的大小会影响生产者的内存使用和性能。如果在途请求过多，可能会占用大量内存资源，导致生产者性能下降。因此，合理设置这个缓存区的大小是优化生产者性能的关键。</p>
+</li>
+</ul>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/"><img class="fill" src="/Hexo/gallery/defaultCover4.png" alt="Kafka Producer发送消息流程之分区器和数据收集器"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-16T20:05:37.000Z" title="7/16/2024, 8:05:37 PM">2024-07-16</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.502Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">6 分钟读完 (大约901个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/">Kafka Producer发送消息流程之分区器和数据收集器</a></p><div class="content"><h1 id="1-Partitioner分区器"><a href="#1-Partitioner分区器" class="headerlink" title="1. Partitioner分区器"></a>1. Partitioner分区器</h1><img src="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/c32c51e8-af40-44a8-a3c5-19473285f7e2.png" class="">
+
+
+
+<p><code>clients/src/main/java/org/apache/kafka/clients/producer/KafkaProducer.java</code>，中doSend方法，记录了生产者将消息发送的流程，其中有一步就是计算当前消息应该发送往对应Topic哪一个分区，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">partition</span> <span class="operator">=</span> partition(record, serializedKey, serializedValue, cluster);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Partitioner partitioner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">partition</span><span class="params">(ProducerRecord&lt;K, V&gt; record, <span class="type">byte</span>[] serializedKey, <span class="type">byte</span>[] serializedValue, Cluster cluster)</span> &#123;</span><br><span class="line">        <span class="comment">//当record的分区已存在，则直接返回，这对应了创建Record时可以手动传入partition参数</span></span><br><span class="line">        <span class="keyword">if</span> (record.partition() != <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">return</span> record.partition();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果存在partitioner分区器，则使用Partitioner.partition方法计算分区数据</span></span><br><span class="line">        <span class="keyword">if</span> (partitioner != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">customPartition</span> <span class="operator">=</span> partitioner.partition(</span><br><span class="line">                record.topic(), record.key(), serializedKey, record.value(), serializedValue, cluster);</span><br><span class="line">            <span class="keyword">if</span> (customPartition &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(String.format(</span><br><span class="line">                    <span class="string">&quot;The partitioner generated an invalid partition number: %d. Partition number should always be non-negative.&quot;</span>, customPartition));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> customPartition;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果没有分区器的情况</span></span><br><span class="line">        <span class="keyword">if</span> (serializedKey != <span class="literal">null</span> &amp;&amp; !partitionerIgnoreKeys) &#123;</span><br><span class="line">            <span class="comment">// hash the keyBytes to choose a partition</span></span><br><span class="line">            <span class="keyword">return</span> BuiltInPartitioner.partitionForKey(serializedKey, cluster.partitionsForTopic(record.topic()).size());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> RecordMetadata.UNKNOWN_PARTITION;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 利用键的哈希值来选择分区</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">partitionForKey</span><span class="params">(<span class="keyword">final</span> <span class="type">byte</span>[] serializedKey, <span class="keyword">final</span> <span class="type">int</span> numPartitions)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Utils.toPositive(Utils.murmur2(serializedKey)) % numPartitions;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-自定义分区器"><a href="#2-自定义分区器" class="headerlink" title="2. 自定义分区器"></a>2. 自定义分区器</h1><p>新建类实现<code>Partitioner</code>接口，key是字符串数字，奇数送到分区0，偶数送到分区1 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyKafkaPartitioner</span> <span class="keyword">implements</span> <span class="title class_">Partitioner</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">partition</span><span class="params">(String s, Object key, <span class="type">byte</span>[] bytes, Object o1, <span class="type">byte</span>[] bytes1, Cluster cluster)</span> &#123;</span><br><span class="line">        <span class="comment">// Ensure the key is a non-null string</span></span><br><span class="line">        <span class="keyword">if</span> (key == <span class="literal">null</span> || !(key <span class="keyword">instanceof</span> String)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Key must be a non-null String&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Parse the key as an integer</span></span><br><span class="line">        <span class="type">int</span> keyInt;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            keyInt = Integer.parseInt((String) key);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Key must be a numeric string&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Determine the partition based on the key&#x27;s odd/even nature</span></span><br><span class="line">        <span class="keyword">if</span> (keyInt % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">// Even keys go to partition 2</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// Odd keys go to partition 0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(Map&lt;String, ?&gt; map)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建一个存在多分区的Topic。</p>
+<img src="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/a2565c1d-d31e-45de-a209-845faf4bd7db.png" class="">
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KafkaProducerPartitionorTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="comment">//创建producer</span></span><br><span class="line">        HashMap&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;localhost:19092&quot;</span>);</span><br><span class="line">        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        <span class="comment">//指定拦截器</span></span><br><span class="line">        config.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, ValueInterceptorTest.class.getName());</span><br><span class="line">        <span class="comment">//指定分区器</span></span><br><span class="line">        config.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, MyKafkaPartitioner.class.getName());</span><br><span class="line"></span><br><span class="line">        KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;String, String&gt;(config);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="comment">//创建record</span></span><br><span class="line">            ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;String, String&gt;(</span><br><span class="line">                    <span class="string">&quot;test1&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;key&quot;</span>+i,</span><br><span class="line">                    <span class="string">&quot;我是你爹&quot;</span>+i</span><br><span class="line">            );</span><br><span class="line">            <span class="comment">//发送record</span></span><br><span class="line">            producer.send(record);</span><br><span class="line">            Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭producer</span></span><br><span class="line">        producer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置好<code>PARTITIONER_CLASS_CONFIG</code>后发送消息。</p>
+<img src="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/09726985-3bab-4047-95e5-d53a203f930c.png" class="">
+
+<img src="/Hexo/2024/07/16/2024-H2/2024-07-16-20-05-34/dda00774-1f86-443b-8018-8ff8d6d4c56c.png" class="">
+
+<p>可以分区器成功起作用了。</p>
+<h1 id="3-RecordAccumulator数据收集器"><a href="#3-RecordAccumulator数据收集器" class="headerlink" title="3. RecordAccumulator数据收集器"></a>3. RecordAccumulator数据收集器</h1><p>通过数据校验后，数据从<code>分区器</code>来到<code>数据收集器</code>。</p>
+<p>数据收集器的工作机制</p>
+<ol>
+<li><p><strong>队列缓存</strong>：<code>RecordAccumulator</code>为每个分区维护一个队列。默认情况下，每个队列的批次大小（buffer size）是16KB，这个大小可以通过配置参数<code>batch.size</code>来调整。</p>
+</li>
+<li><p><strong>缓冲区管理</strong>：</p>
+<ul>
+<li>每个分区都有一个或多个批次，每个批次包含多条消息。</li>
+<li>当一个批次填满（即达到<code>batch.size</code>），或者达到发送条件（如<code>linger.ms</code>时间窗口，即发送消息前等待的时间）时，批次会被标记为可发送状态，并被传递给<code>Sender</code>线程。</li>
+</ul>
+</li>
+<li><p><strong>满批次处理</strong>：</p>
+<ul>
+<li>当某个分区的队列中的某个批次大小超过了16KB（默认值）或满足<code>linger.ms</code>的时间条件，<code>RecordAccumulator</code>会将该批次加入到一个待发送的队列中。</li>
+<li><code>Sender</code>线程会从待发送队列中获取这些满批次并将其发送到Kafka集群。</li>
+</ul>
+</li>
+</ol>
+</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous is-invisible is-hidden-mobile"><a href="/Hexo/tags/Kafka/page/0/">上一页</a></div><div class="pagination-next"><a href="/Hexo/tags/Kafka/page/2/">下一页</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link is-current" href="/Hexo/tags/Kafka/">1</a></li><li><a class="pagination-link" href="/Hexo/tags/Kafka/page/2/">2</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p><p class="is-size-6 is-block">IT Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Earth, Solar System</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/Xiamu-ssr" target="_blank" rel="me noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Github" href="https://github.com/Xiamu-ssr"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="RSS" href="/Hexo/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/Hexo/categories/Front-End/"><span class="level-start"><span class="level-item">Front-End</span></span><span class="level-end"><span class="level-item tag">12</span></span></a><ul><li><a class="level is-mobile" href="/Hexo/categories/Front-End/Nginx/"><span class="level-start"><span class="level-item">Nginx</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/Front-End/Vue/"><span class="level-start"><span class="level-item">Vue</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li></ul></li><li><a class="level is-mobile" href="/Hexo/categories/Hexo/"><span class="level-start"><span class="level-item">Hexo</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/JavaSE/"><span class="level-start"><span class="level-item">JavaSE</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringBoot2/"><span class="level-start"><span class="level-item">SpringBoot2</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringBoot3/"><span class="level-start"><span class="level-item">SpringBoot3</span></span><span class="level-end"><span class="level-item tag">20</span></span></a><ul><li><a class="level is-mobile" href="/Hexo/categories/SpringBoot3/Docker/"><span class="level-start"><span class="level-item">Docker</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringBoot3/MyBatisPlus/"><span class="level-start"><span class="level-item">MyBatisPlus</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringBoot3/MySQL/"><span class="level-start"><span class="level-item">MySQL</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringBoot3/OpenAPI3/"><span class="level-start"><span class="level-item">OpenAPI3</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/"><span class="level-start"><span class="level-item">SpringCloud</span></span><span class="level-end"><span class="level-item tag">55</span></span></a><ul><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Elasticsearch/"><span class="level-start"><span class="level-item">Elasticsearch</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Gateway/"><span class="level-start"><span class="level-item">Gateway</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">16</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Minio/"><span class="level-start"><span class="level-item">Minio</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Nacos/"><span class="level-start"><span class="level-item">Nacos</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/OpenFeign/"><span class="level-start"><span class="level-item">OpenFeign</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/RabbitMQ/"><span class="level-start"><span class="level-item">RabbitMQ</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Redis/"><span class="level-start"><span class="level-item">Redis</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/RuoYi-Cloud-Plus/"><span class="level-start"><span class="level-item">RuoYi-Cloud-Plus</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/Seata/"><span class="level-start"><span class="level-item">Seata</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/xxl-job/"><span class="level-start"><span class="level-item">xxl-job</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98%E6%9E%B6%E6%9E%84/"><span class="level-start"><span class="level-item">多级缓存架构</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/%E6%94%AF%E4%BB%98/"><span class="level-start"><span class="level-item">支付</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/SpringCloud/%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83/"><span class="level-start"><span class="level-item">认证授权</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li></ul></li><li><a class="level is-mobile" href="/Hexo/categories/Utils/"><span class="level-start"><span class="level-item">Utils</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/%E5%85%B6%E4%BB%96/"><span class="level-start"><span class="level-item">其他</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="level-start"><span class="level-item">大数据</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/Hexo/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/"><span class="level-start"><span class="level-item">未分类</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/Hexo/tags/Consumer/"><span class="tag">Consumer</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/Hexo/"><span class="tag">Hexo</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/JWT/"><span class="tag">JWT</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/Kafka/"><span class="tag">Kafka</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/Nginx/"><span class="tag">Nginx</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/OAuth2-1/"><span class="tag">OAuth2.1</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/RSA/"><span class="tag">RSA</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/Spring-Security/"><span class="tag">Spring Security</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/SpringBoot/"><span class="tag">SpringBoot</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/Vue3/"><span class="tag">Vue3</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/ambari/"><span class="tag">ambari</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/c/"><span class="tag">c++</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/css3/"><span class="tag">css3</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/docker/"><span class="tag">docker</span><span class="tag">29</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/echarts/"><span class="tag">echarts</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/ecmascript/"><span class="tag">ecmascript</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/elasticsearch/"><span class="tag">elasticsearch</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/excel/"><span class="tag">excel</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/gateway/"><span class="tag">gateway</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/git/"><span class="tag">git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/github/"><span class="tag">github</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/hadoop/"><span class="tag">hadoop</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/hdfs/"><span class="tag">hdfs</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/hexo/"><span class="tag">hexo</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/intellij-idea/"><span class="tag">intellij-idea</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/java/"><span class="tag">java</span><span class="tag">25</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/javascript/"><span class="tag">javascript</span><span class="tag">9</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/jenkins/"><span class="tag">jenkins</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/jvm/"><span class="tag">jvm</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/kafka/"><span class="tag">kafka</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/linux/"><span class="tag">linux</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/md/"><span class="tag">md</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/mybatis/"><span class="tag">mybatis</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/mysql/"><span class="tag">mysql</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/nginx/"><span class="tag">nginx</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/openresty/"><span class="tag">openresty</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/postman/"><span class="tag">postman</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/rabbitmq/"><span class="tag">rabbitmq</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/redis/"><span class="tag">redis</span><span class="tag">11</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/restful/"><span class="tag">restful</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/ruby/"><span class="tag">ruby</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/ruoyi/"><span class="tag">ruoyi</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/spring/"><span class="tag">spring</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/spring-boot/"><span class="tag">spring boot</span><span class="tag">21</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/spring-cloud/"><span class="tag">spring cloud</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/spring-security/"><span class="tag">spring security</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/springamqp/"><span class="tag">springamqp</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/springboot/"><span class="tag">springboot</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/springcloud/"><span class="tag">springcloud</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/typescript/"><span class="tag">typescript</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/ubuntu/"><span class="tag">ubuntu</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/vue/"><span class="tag">vue</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/vue-js/"><span class="tag">vue.js</span><span class="tag">8</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/web/"><span class="tag">web</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/web%E5%AE%89%E5%85%A8/"><span class="tag">web安全</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/windows/"><span class="tag">windows</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/word/"><span class="tag">word</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/zookeeper/"><span class="tag">zookeeper</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><span class="tag">个人博客</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E4%BA%8B%E5%8A%A1/"><span class="tag">事务</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%88%86%E5%8C%BA/"><span class="tag">分区</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"><span class="tag">分布式</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"><span class="tag">分布式文件系统</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%89%8D%E7%AB%AF/"><span class="tag">前端</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"><span class="tag">单例模式</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%8D%9A%E5%AE%A2/"><span class="tag">博客</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%8F%8C%E6%A3%80%E9%94%81/"><span class="tag">双检锁</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/"><span class="tag">反向代理</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%90%8E%E7%AB%AF/"><span class="tag">后端</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="tag">大数据</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%AD%98%E5%82%A8/"><span class="tag">存储</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%AE%B9%E5%99%A8/"><span class="tag">容器</span><span class="tag">10</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%B9%82%E7%AD%89/"><span class="tag">幂等</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80/"><span class="tag">开发语言</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"><span class="tag">微服务</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%8B%A6%E6%88%AA%E5%99%A8/"><span class="tag">拦截器</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"><span class="tag">排序算法</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%94%AF%E4%BB%98/"><span class="tag">支付</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%94%AF%E4%BB%98%E5%AE%9D/"><span class="tag">支付宝</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="tag">数据库</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"><span class="tag">文件系统</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"><span class="tag">服务器</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%9C%AA%E5%88%86%E7%B1%BB/"><span class="tag">未分类</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%9E%9A%E4%B8%BE%E5%8D%95%E4%BE%8B/"><span class="tag">枚举单例</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%9E%B6%E6%9E%84/"><span class="tag">架构</span><span class="tag">10</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span class="tag">正则表达式</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E6%B6%88%E8%B4%B9%E8%80%85/"><span class="tag">消费者</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E7%88%AC%E8%99%AB/"><span class="tag">爬虫</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E7%94%9F%E4%BA%A7%E8%80%85/"><span class="tag">生产者</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E7%BC%93%E5%AD%98/"><span class="tag">缓存</span><span class="tag">10</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E7%BD%91%E7%AB%99/"><span class="tag">网站</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E8%A7%86%E9%A2%91/"><span class="tag">视频</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><span class="tag">设计模式</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"><span class="tag">负载均衡</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E8%BF%90%E7%BB%B4/"><span class="tag">运维</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E9%87%8D%E6%9E%84/"><span class="tag">重构</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E9%94%81/"><span class="tag">锁</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/Hexo/tags/%E9%9B%86%E7%BE%A4/"><span class="tag">集群</span><span class="tag">1</span></a></div></div></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><figure class="media-left"><a class="image" href="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/"><img src="/Hexo/gallery/defaultThumbnail4.png" alt="Kafka 更多延伸讨论"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-07-31T18:11:58.000Z">2024-07-31</time></p><p class="title"><a href="/Hexo/2024/07/31/2024-H2/2024-07-31-18-11-56/">Kafka 更多延伸讨论</a></p><p class="categories"><a href="/Hexo/categories/SpringCloud/">SpringCloud</a> / <a href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/"><img src="/Hexo/gallery/defaultThumbnail1.png" alt="Kafka Consumer"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-07-30T18:58:30.000Z">2024-07-30</time></p><p class="title"><a href="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/">Kafka Consumer</a></p><p class="categories"><a href="/Hexo/categories/SpringCloud/">SpringCloud</a> / <a href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/"><img src="/Hexo/gallery/defaultThumbnail2.png" alt="Kafka之存储设计"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-07-20T19:59:49.000Z">2024-07-20</time></p><p class="title"><a href="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/">Kafka之存储设计</a></p><p class="categories"><a href="/Hexo/categories/SpringCloud/">SpringCloud</a> / <a href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/Hexo/2024/07/19/2024-H2/2024-07-19-21-29-10/"><img src="/Hexo/gallery/defaultThumbnail7.png" alt="Kafka Producer之事务性"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-07-19T21:29:12.000Z">2024-07-19</time></p><p class="title"><a href="/Hexo/2024/07/19/2024-H2/2024-07-19-21-29-10/">Kafka Producer之事务性</a></p><p class="categories"><a href="/Hexo/categories/SpringCloud/">SpringCloud</a> / <a href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/Hexo/2024/07/18/2024-H2/2024-07-18-21-10-28/"><img src="/Hexo/gallery/defaultThumbnail1.png" alt="Kafka Producer之幂等性"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-07-18T21:10:29.000Z">2024-07-18</time></p><p class="title"><a href="/Hexo/2024/07/18/2024-H2/2024-07-18-21-10-28/">Kafka Producer之幂等性</a></p><p class="categories"><a href="/Hexo/categories/SpringCloud/">SpringCloud</a> / <a href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/Hexo/archives/2024/07/"><span class="level-start"><span class="level-item">七月 2024</span></span><span class="level-end"><span class="level-item tag">17</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2024/06/"><span class="level-start"><span class="level-item">六月 2024</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2024/05/"><span class="level-start"><span class="level-item">五月 2024</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2024/04/"><span class="level-start"><span class="level-item">四月 2024</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2024/03/"><span class="level-start"><span class="level-item">三月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2024/02/"><span class="level-start"><span class="level-item">二月 2024</span></span><span class="level-end"><span class="level-item tag">16</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2024/01/"><span class="level-start"><span class="level-item">一月 2024</span></span><span class="level-end"><span class="level-item tag">31</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2023/12/"><span class="level-start"><span class="level-item">十二月 2023</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2023/11/"><span class="level-start"><span class="level-item">十一月 2023</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">13</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2023/06/"><span class="level-start"><span class="level-item">六月 2023</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/Hexo/archives/2021/12/"><span class="level-start"><span class="level-item">十二月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

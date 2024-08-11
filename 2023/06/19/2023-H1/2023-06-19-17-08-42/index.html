@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>Docker for Winodws从镜像简易部署基于Ambari的hadoop集群 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="建议文档视频一起食用。 文档链接 https:&amp;#x2F;&amp;#x2F;1138882663s-organization.gitbook.io&amp;#x2F;between-code-and-words&amp;#x2F;bigdata&amp;#x2F;ambari&amp;#x2F;da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambarihttps:&amp;#x2F;&amp;#x2F;1138882663s-organization.gitbook.io&amp;#x2F;between-cod"><meta property="og:type" content="blog"><meta property="og:title" content="Docker for Winodws从镜像简易部署基于Ambari的hadoop集群"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="建议文档视频一起食用。 文档链接 https:&amp;#x2F;&amp;#x2F;1138882663s-organization.gitbook.io&amp;#x2F;between-code-and-words&amp;#x2F;bigdata&amp;#x2F;ambari&amp;#x2F;da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambarihttps:&amp;#x2F;&amp;#x2F;1138882663s-organization.gitbook.io&amp;#x2F;between-cod"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/1718889974536.png"><meta property="article:published_time" content="2023-06-19T17:08:42.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.142Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="docker"><meta property="article:tag" content="hadoop"><meta property="article:tag" content="ambari"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/1718889974536.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/"},"headline":"Docker for Winodws从镜像简易部署基于Ambari的hadoop集群","image":["https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/1718889974536.png"],"datePublished":"2023-06-19T17:08:42.000Z","dateModified":"2024-08-11T07:21:48.142Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"建议文档视频一起食用。 文档链接 https:&#x2F;&#x2F;1138882663s-organization.gitbook.io&#x2F;between-code-and-words&#x2F;bigdata&#x2F;ambari&#x2F;da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambarihttps:&#x2F;&#x2F;1138882663s-organization.gitbook.io&#x2F;between-cod"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/1718889974536.png" alt="Docker for Winodws从镜像简易部署基于Ambari的hadoop集群"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-06-19T17:08:42.000Z" title="6/19/2023, 5:08:42 PM">2023-06-19</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.142Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"> Xiamu </span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringBoot3/">SpringBoot3</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringBoot3/Docker/">Docker</a><span> / </span><a class="link-muted" href="/Hexo/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span><span class="level-item">2 分钟读完 (大约316个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">Docker for Winodws从镜像简易部署基于Ambari的hadoop集群</h1><div class="content"><p>建议文档视频一起食用。</p>
+<p>文档链接</p>
+<p><a target="_blank" rel="noopener" href="https://1138882663s-organization.gitbook.io/between-code-and-words/bigdata/ambari/da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambari" title="https://1138882663s-organization.gitbook.io/between-code-and-words/bigdata/ambari/da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambari">https://1138882663s-organization.gitbook.io/between-code-and-words/bigdata/ambari/da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambarihttps://1138882663s-organization.gitbook.io/between-code-and-words/bigdata/ambari/da-jian-xu-ni-ji-ji-qun-yi-ji-an-zhuang-ambari</a>视频链接</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Eh4y1R78n/?share_source=copy_web&vd_source=c049c0e0a94c93c0094803efaa8a12fc" title="https://www.bilibili.com/video/BV1Eh4y1R78n/?share_source=copy_web&amp;vd_source=c049c0e0a94c93c0094803efaa8a12fc">https://www.bilibili.com/video/BV1Eh4y1R78n/?share_source&#x3D;copy_web&amp;vd_source&#x3D;c049c0e0a94c93c0094803efaa8a12fc<img src="/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/1718889974367.png" class="" title="This is an example image">https://www.bilibili.com/video/BV1Eh4y1R78n/?share_source&#x3D;copy_web&amp;vd_source&#x3D;c049c0e0a94c93c0094803efaa8a12fc</a></p>
+<p>docker因为容器化技术和虚拟化技术的区别，部署hadoop会存在很多bug。建议使用虚拟机而不是容器。</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Az4y1v7Zw/" title="https://www.bilibili.com/video/BV1Az4y1v7Zw/">https://www.bilibili.com/video/BV1Az4y1v7Zw/<img src="/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/1718889974536.png" class="" title="This is an example image">https://www.bilibili.com/video/BV1Az4y1v7Zw/</a></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Docker for Winodws从镜像简易部署基于Ambari的hadoop集群</p><p><a href="https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/">https://xiamu-ssr.github.io/Hexo/2023/06/19/2023-H1/2023-06-19-17-08-42/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-06-19</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/docker/">docker</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/hadoop/">hadoop</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/ambari/">ambari</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2023/10/13/2023-H2/2023-10-13-14-23-54/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">JavaSE-集合</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2023/06/19/2023-H1/2023-06-19-17-06-08/"><span class="level-item">Linux+Docker部署基于Ambari的Hadoop集群</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "e14c66094d74c1fa7421083c2500b96b",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><!--!--></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

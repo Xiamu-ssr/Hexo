@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>基本正则表达式 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="正则表达式在线测试https:&amp;#x2F;&amp;#x2F;c.runoob.com&amp;#x2F;front-end&amp;#x2F;854&amp;#x2F; 一、基本规则1. 基本匹配正则表达式最基本的形式是一个由字母和数字组成的序列。这个序列可以精确匹配文本中的内容。    表达式 描述    abc 精确匹配 ‘abc’   2. 量词量词定义了一个模式应该出现的次数。    表达式 描述    * 匹配前面的模式零次或多次   + 匹配前面的模式一次或多次"><meta property="og:type" content="blog"><meta property="og:title" content="基本正则表达式"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2023/11/28/2023-H2/2023-11-28-18-03-58/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="正则表达式在线测试https:&amp;#x2F;&amp;#x2F;c.runoob.com&amp;#x2F;front-end&amp;#x2F;854&amp;#x2F; 一、基本规则1. 基本匹配正则表达式最基本的形式是一个由字母和数字组成的序列。这个序列可以精确匹配文本中的内容。    表达式 描述    abc 精确匹配 ‘abc’   2. 量词量词定义了一个模式应该出现的次数。    表达式 描述    * 匹配前面的模式零次或多次   + 匹配前面的模式一次或多次"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover2.png"><meta property="article:published_time" content="2023-11-28T18:03:58.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.186Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="正则表达式"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover2.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2023/11/28/2023-H2/2023-11-28-18-03-58/"},"headline":"基本正则表达式","image":["https://xiamu-ssr.github.io/Hexo/gallery/defaultCover2.png"],"datePublished":"2023-11-28T18:03:58.000Z","dateModified":"2024-08-11T07:21:48.186Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"正则表达式在线测试https:&#x2F;&#x2F;c.runoob.com&#x2F;front-end&#x2F;854&#x2F; 一、基本规则1. 基本匹配正则表达式最基本的形式是一个由字母和数字组成的序列。这个序列可以精确匹配文本中的内容。    表达式 描述    abc 精确匹配 ‘abc’   2. 量词量词定义了一个模式应该出现的次数。    表达式 描述    * 匹配前面的模式零次或多次   + 匹配前面的模式一次或多次"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2023/11/28/2023-H2/2023-11-28-18-03-58/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/gallery/defaultCover2.png" alt="基本正则表达式"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-28T18:03:58.000Z" title="11/28/2023, 6:03:58 PM">2023-11-28</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.186Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"> Xiamu </span><span class="level-item"><a class="link-muted" href="/Hexo/categories/Utils/">Utils</a></span><span class="level-item">9 分钟读完 (大约1379个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">基本正则表达式</h1><div class="content"><p><a target="_blank" rel="noopener" href="https://c.runoob.com/front-end/854/">正则表达式在线测试https://c.runoob.com/front-end/854/</a></p>
+<h1 id="一、基本规则"><a href="#一、基本规则" class="headerlink" title="一、基本规则"></a>一、基本规则</h1><h3 id="1-基本匹配"><a href="#1-基本匹配" class="headerlink" title="1. 基本匹配"></a>1. 基本匹配</h3><p>正则表达式最基本的形式是一个由字母和数字组成的序列。这个序列可以精确匹配文本中的内容。</p>
+<table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">abc</td>
+<td align="left">精确匹配 ‘abc’</td>
+</tr>
+</tbody></table>
+<h3 id="2-量词"><a href="#2-量词" class="headerlink" title="2. 量词"></a>2. 量词</h3><p>量词定义了一个模式应该出现的次数。</p>
+<table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">*</td>
+<td align="left">匹配前面的模式零次或多次</td>
+</tr>
+<tr>
+<td align="left">+</td>
+<td align="left">匹配前面的模式一次或多次</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">匹配前面的模式零次或一次</td>
+</tr>
+<tr>
+<td align="left">{n}</td>
+<td align="left">匹配前面的模式 n 次</td>
+</tr>
+<tr>
+<td align="left">{n,}</td>
+<td align="left">匹配前面的模式至少 n 次</td>
+</tr>
+<tr>
+<td align="left">{n,m}</td>
+<td align="left">匹配前面的模式至少 n 次，但不超过 m 次</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>*</code> 和 <code>+</code> 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个 <code>?</code> 就可以实现非贪婪或最小匹配。</p>
+</blockquote>
+<h3 id="3-字符类"><a href="#3-字符类" class="headerlink" title="3. 字符类"></a>3. 字符类</h3><p>字符类允许我们定义一个字符集合，然后匹配其中任何一个字符。</p>
+<table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">[abc]</td>
+<td align="left">匹配 ‘a’、’b’ 或 ‘c’</td>
+</tr>
+<tr>
+<td align="left">[a-z]</td>
+<td align="left">匹配任何小写字母</td>
+</tr>
+<tr>
+<td align="left">[A-Z]</td>
+<td align="left">匹配任何大写字母</td>
+</tr>
+<tr>
+<td align="left">[0-9]</td>
+<td align="left">匹配任何数字</td>
+</tr>
+</tbody></table>
+<h3 id="4-特殊字符"><a href="#4-特殊字符" class="headerlink" title="4. 特殊字符"></a>4. 特殊字符</h3><p>含有特殊含义的字符</p>
+<table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">\</td>
+<td align="left">将下一个字符标记为一个特殊字符、或一个原义字符、或一个 向后引用、或一个八进制转义符。例如，’n’ 匹配字符 “n”。’\n’ 匹配一个换行符。序列 ‘\‘ 匹配 “” 而 “(“ 则匹配 “(“。</td>
+</tr>
+<tr>
+<td align="left">.</td>
+<td align="left">匹配任何单个字符（除了换行符\n）</td>
+</tr>
+<tr>
+<td align="left">\w</td>
+<td align="left">匹配任何单词字符（等同于 [a-zA-Z0-9_]）</td>
+</tr>
+<tr>
+<td align="left">\W</td>
+<td align="left">匹配任何非单词字符</td>
+</tr>
+<tr>
+<td align="left">\d</td>
+<td align="left">匹配任何数字字符（等同于 [0-9]）</td>
+</tr>
+<tr>
+<td align="left">\D</td>
+<td align="left">匹配任何非数字字符</td>
+</tr>
+<tr>
+<td align="left">\s</td>
+<td align="left">匹配任何空白字符</td>
+</tr>
+<tr>
+<td align="left">\S</td>
+<td align="left">匹配任何非空白字符</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td align="left">匹配一个换行符</td>
+</tr>
+<tr>
+<td align="left">\r</td>
+<td align="left">匹配一个回车符</td>
+</tr>
+<tr>
+<td align="left">\t</td>
+<td align="left">匹配一个制表符</td>
+</tr>
+<tr>
+<td align="left">^</td>
+<td align="left">匹配输入字符串开始的位置</td>
+</tr>
+<tr>
+<td align="left">$</td>
+<td align="left">匹配输入字符串结尾的位置</td>
+</tr>
+<tr>
+<td align="left">\b</td>
+<td align="left">匹配一个单词边界，即字与空格间的位置</td>
+</tr>
+<tr>
+<td align="left">\B</td>
+<td align="left">匹配一个非单词边界</td>
+</tr>
+</tbody></table>
+<h3 id="5-分组"><a href="#5-分组" class="headerlink" title="5. 分组"></a>5. 分组</h3><p>在正则表达式中，括号 () 用于创建一个分组。分组有两个主要的用途：<br><strong>捕获分组</strong> ：括号中的表达式会作为一个单独的单元进行匹配，然后将匹配的内容保存起来以供后续使用。例如，表达式 (abc) 会匹配文本中的 ‘abc’，并将其保存为一个分组。<br><strong>量词应用</strong>：括号还可以让我们对一组字符应用量词。例如，表达式 (abc){2} 会匹配 ‘abcabc’，因为 {2} 量词应用于整个 ‘abc’ 分组，表示这个分组需要连续匹配两次。</p>
+<p>以下是一些使用括号的例子：<br>(abc)：匹配并捕获 ‘abc’。<br>a(bc)：匹配并捕获 ‘bc’，前面有 ‘a’。<br>(a|b)c：匹配 ‘ac’ 或 ‘bc’。</p>
+<p>在正则表达式中，你可以通过反向引用来使用捕获到的内容。反向引用使用反斜杠 \ 加上一个数字来表示，例如 \1、\2 等。<br>这个数字表示的是捕获组的编号。捕获组的编号是根据左括号 ( 出现的顺序来确定的，从 1 开始计数。例如，在表达式 <code>(a)(b)(c)</code> 中，a 是第 1 组，b 是第 2 组，c 是第 3 组。</p>
+<p>以下是一些使用反向引用的例子：<br>(a)\1：匹配 ‘aa’。\1 是对第一组的引用，表示和第一组匹配的相同内容，也就是 ‘a’。<br>(a)(b)\2\1：匹配 ‘abba’。\2 是对第二组的引用，表示 ‘b’，\1 是对第一组的引用，表示 ‘a’。</p>
+<h1 id="二、修饰符"><a href="#二、修饰符" class="headerlink" title="二、修饰符"></a>二、修饰符</h1><p>标记也称为修饰符，正则表达式的标记用于指定额外的匹配策略。<br>标记不写在正则表达式里，标记位于表达式之外，格式如</p>
+<figure class="highlight plaintext"><figcaption><span>language-bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/pattern/flags</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">修饰符</th>
+<th align="left">含义</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">i</td>
+<td align="left">ignore - 不区分大小写</td>
+<td align="left">将匹配设置为不区分大小写，搜索时不区分大小写，如 A 和 a 没有区别。</td>
+</tr>
+<tr>
+<td align="left">g</td>
+<td align="left">global - 全局匹配</td>
+<td align="left">查找所有的匹配项。</td>
+</tr>
+<tr>
+<td align="left">m</td>
+<td align="left">multi line - 多行匹配</td>
+<td align="left">使边界字符 ^ 和 $ 匹配每一行的开头和结尾，记住是多行，而不是整个字符串的开头和结尾。</td>
+</tr>
+<tr>
+<td align="left">s</td>
+<td align="left">特殊字符圆点 . 中包含换行符 \n</td>
+<td align="left">默认情况下的圆点 . 是匹配除换行符 \n 之外的任何字符，加上 s 修饰符之后, . 中包含换行符 \n。</td>
+</tr>
+</tbody></table>
+<h1 id="三、优先级"><a href="#三、优先级" class="headerlink" title="三、优先级"></a>三、优先级</h1><p>正则表达式从左到右进行计算，并遵循优先级顺序，这与算术表达式非常类似。相同优先级的从左到右进行运算，不同优先级的运算先高后低。</p>
+<table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">\</td>
+<td align="left">转义符</td>
+</tr>
+<tr>
+<td align="left">(), <code>(?:)</code>, (?&#x3D;), []</td>
+<td align="left">圆括号和方括号</td>
+</tr>
+<tr>
+<td align="left">*, +, ?, {n}, {n,}, {n,m}</td>
+<td align="left">限定符</td>
+</tr>
+<tr>
+<td align="left">^, $, \任何元字符、任何字符</td>
+<td align="left">定位点和序列（即：位置和顺序）</td>
+</tr>
+<tr>
+<td align="left">|</td>
+<td align="left">替换，”或”操作 字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”。</td>
+</tr>
+</tbody></table>
+</div><div class="article-licensing box"><div class="licensing-title"><p>基本正则表达式</p><p><a href="https://xiamu-ssr.github.io/Hexo/2023/11/28/2023-H2/2023-11-28-18-03-58/">https://xiamu-ssr.github.io/Hexo/2023/11/28/2023-H2/2023-11-28-18-03-58/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-11-28</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2023/12/01/2023-H2/2023-12-01-14-49-31/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">JavaWeb MyBatisPlus添加一个能够批量插入的Mapper通用方法</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2023/11/27/2023-H2/2023-11-27-11-32-08/"><span class="level-item">JavaWeb若依分页插件使用</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "a3c9a96df28a727aba7f08c047c504b1",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#一、基本规则"><span class="level-left"><span class="level-item">一、基本规则</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-基本匹配"><span class="level-left"><span class="level-item">1. 基本匹配</span></span></a></li><li><a class="level is-mobile" href="#2-量词"><span class="level-left"><span class="level-item">2. 量词</span></span></a></li><li><a class="level is-mobile" href="#3-字符类"><span class="level-left"><span class="level-item">3. 字符类</span></span></a></li><li><a class="level is-mobile" href="#4-特殊字符"><span class="level-left"><span class="level-item">4. 特殊字符</span></span></a></li><li><a class="level is-mobile" href="#5-分组"><span class="level-left"><span class="level-item">5. 分组</span></span></a></li></ul></li><li><a class="level is-mobile" href="#二、修饰符"><span class="level-left"><span class="level-item">二、修饰符</span></span></a></li><li><a class="level is-mobile" href="#三、优先级"><span class="level-left"><span class="level-item">三、优先级</span></span></a></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

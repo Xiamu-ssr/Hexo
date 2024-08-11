@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>Kafka之存储设计 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="1. 分区和副本的存储结构在一个多 broker 的 Kafka 集群中，topic 的分区和副本在各个 broker 上的存储文件夹分布如下： 假设有以下设置：  一个 Kafka 集群包含 3 个 broker（broker 0, broker 1, broker 2）。 一个 topic my-topic，有 3 个分区（partition 0, partition 1, partition"><meta property="og:type" content="blog"><meta property="og:title" content="Kafka之存储设计"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="1. 分区和副本的存储结构在一个多 broker 的 Kafka 集群中，topic 的分区和副本在各个 broker 上的存储文件夹分布如下： 假设有以下设置：  一个 Kafka 集群包含 3 个 broker（broker 0, broker 1, broker 2）。 一个 topic my-topic，有 3 个分区（partition 0, partition 1, partition"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover2.png"><meta property="article:published_time" content="2024-07-20T19:59:49.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.514Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="Kafka"><meta property="article:tag" content="存储"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/gallery/defaultCover2.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/"},"headline":"Kafka之存储设计","image":["https://xiamu-ssr.github.io/Hexo/gallery/defaultCover2.png"],"datePublished":"2024-07-20T19:59:49.000Z","dateModified":"2024-08-11T07:21:48.514Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"1. 分区和副本的存储结构在一个多 broker 的 Kafka 集群中，topic 的分区和副本在各个 broker 上的存储文件夹分布如下： 假设有以下设置：  一个 Kafka 集群包含 3 个 broker（broker 0, broker 1, broker 2）。 一个 topic my-topic，有 3 个分区（partition 0, partition 1, partition"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/gallery/defaultCover2.png" alt="Kafka之存储设计"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-20T19:59:49.000Z" title="7/20/2024, 7:59:49 PM">2024-07-20</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.514Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">21 分钟读完 (大约3116个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">Kafka之存储设计</h1><div class="content"><h1 id="1-分区和副本的存储结构"><a href="#1-分区和副本的存储结构" class="headerlink" title="1. 分区和副本的存储结构"></a>1. 分区和副本的存储结构</h1><p>在一个多 broker 的 Kafka 集群中，topic 的分区和副本在各个 broker 上的存储文件夹分布如下：</p>
+<p>假设有以下设置：</p>
+<ul>
+<li>一个 Kafka 集群包含 3 个 broker（broker 0, broker 1, broker 2）。</li>
+<li>一个 topic <code>my-topic</code>，有 3 个分区（partition 0, partition 1, partition 2）。</li>
+<li>每个分区有 2 个副本。</li>
+</ul>
+<h3 id="1-分区和副本的分布"><a href="#1-分区和副本的分布" class="headerlink" title="1. 分区和副本的分布"></a>1. 分区和副本的分布</h3><p>Kafka 会在多个 broker 之间分配分区和副本。假设分配如下：</p>
+<ul>
+<li><code>partition 0</code>：<ul>
+<li>leader: broker 0</li>
+<li>follower: broker 1</li>
+</ul>
+</li>
+<li><code>partition 1</code>：<ul>
+<li>leader: broker 1</li>
+<li>follower: broker 2</li>
+</ul>
+</li>
+<li><code>partition 2</code>：<ul>
+<li>leader: broker 2</li>
+<li>follower: broker 0</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-存储目录结构"><a href="#2-存储目录结构" class="headerlink" title="2. 存储目录结构"></a>2. 存储目录结构</h3><p>每个 broker 的数据目录结构如下（假设 <code>log.dirs</code> 配置为 <code>/var/lib/kafka/data</code>）：</p>
+<ul>
+<li>Broker 0 (<code>/var/lib/kafka/data</code>)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/kafka/data</span><br><span class="line">└── my-topic-0  # partition 0 leader</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br><span class="line">└── my-topic-2  # partition 2 follower</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Broker 1 (<code>/var/lib/kafka/data</code>)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/kafka/data</span><br><span class="line">└── my-topic-0  # partition 0 follower</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br><span class="line">└── my-topic-1  # partition 1 leader</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Broker 2 (<code>/var/lib/kafka/data</code>)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/kafka/data</span><br><span class="line">└── my-topic-1  # partition 1 follower</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br><span class="line">└── my-topic-2  # partition 2 leader</span><br><span class="line">    ├── 00000000000000000000.log</span><br><span class="line">    ├── 00000000000000000000.index</span><br><span class="line">    ├── 00000000000000000000.timeindex</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-文件描述"><a href="#3-文件描述" class="headerlink" title="3. 文件描述"></a>3. 文件描述</h3><p>每个分区目录包含多个文件：</p>
+<ul>
+<li><code>.log</code> 文件：存储实际的消息数据。</li>
+<li><code>.index</code> 文件：存储消息偏移量索引，以便快速定位消息。</li>
+<li><code>.timeindex</code> 文件：存储消息时间戳索引，以便基于时间进行查找。</li>
+</ul>
+<h1 id="2-相关配置"><a href="#2-相关配置" class="headerlink" title="2. 相关配置"></a>2. 相关配置</h1><p>在 Apache Kafka 中，消息到达 leader broker 后，实际上是先写入操作系统的页缓存，然后由操作系统决定何时将数据刷入磁盘。</p>
+<p>Kafka 允许通过配置参数来控制消息何时刷入磁盘。主要有以下几个重要的参数：</p>
+<ul>
+<li><code>log.flush.interval.messages</code>：指定在写入多少条消息后，强制将数据刷入磁盘。默认为 <code>Long.MAX_VALUE</code>，即不基于消息数量进行刷盘。</li>
+<li><code>log.flush.interval.ms</code>：指定时间间隔（以毫秒为单位），强制将数据刷入磁盘。默认为 <code>Long.MAX_VALUE</code>，即不基于时间进行刷盘。</li>
+<li><code>log.flush.scheduler.interval.ms</code>：默认值为 <code>3000</code> 毫秒。这只是一个检查的频率，实际的刷盘行为是由 <code>log.flush.interval.ms</code> 决定的。当调度器检查时，如果发现已经超过了 <code>log.flush.interval.ms</code> 设置的时间间隔，就会触发刷盘操作。</li>
+<li><code>log.segment.bytes</code>：控制单个日志段文件的最大大小，当一个日志段文件达到指定大小时，Kafka 会创建一个新的日志段文件，默认值1G。</li>
+<li><code>log.segment.delete.delay.ms</code>：控制日志段文件在被删除之前的延迟时间。当一个日志段文件被标记为删除后，Kafka 会等待指定的延迟时间才会真正删除该文件。这为潜在的恢复操作提供了缓冲时间。默认值60000 ms。</li>
+<li><code>log.roll.ms</code> 和 <code>log.roll.hours</code>：控制日志段文件的滚动时间间隔，无论日志段文件的大小如何，当达到指定的时间间隔时，Kafka 会创建一个新的日志段文件。<code>log.roll.hours</code>默认值168 小时（7 天）。</li>
+</ul>
+<h1 id="3-数据文件类型"><a href="#3-数据文件类型" class="headerlink" title="3. 数据文件类型"></a>3. 数据文件类型</h1><img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/8689aab7-3f63-48b0-9da6-279b832d5fb3.png" class="">
+
+<ol>
+<li><p><strong>.index 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的偏移量索引文件。它用于快速查找消息在日志文件中的位置。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000000.index</code></li>
+<li><strong>作用</strong>：通过这个索引文件，Kafka 可以快速定位消息在日志文件中的物理位置，以便更快地读取消息。</li>
+</ul>
+</li>
+<li><p><strong>.log 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的日志文件，存储实际的消息数据。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000000.log</code></li>
+<li><strong>作用</strong>：包含了生产者发送的消息内容。每个日志文件是一个分区的一部分，日志文件的命名表示消息的起始偏移量。</li>
+</ul>
+</li>
+<li><p><strong>.timeindex 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的时间戳索引文件，存储消息的时间戳索引。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000000.timeindex</code></li>
+<li><strong>作用</strong>：通过这个文件，Kafka 可以根据时间戳快速查找消息。这个文件对于实现基于时间的消息查找非常重要。</li>
+</ul>
+</li>
+<li><p><strong>.snapshot 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的快照文件，记录了日志段的元数据快照。</li>
+<li><strong>命名格式</strong>：<code>00000000000000000016.snapshot</code></li>
+<li><strong>作用</strong>：用于恢复日志段的元数据，保证在崩溃恢复时能够正确地重建索引和时间戳数据。</li>
+</ul>
+</li>
+<li><p><strong>leader-epoch-checkpoint 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 用于记录 leader 选举周期的检查点文件。</li>
+<li><strong>作用</strong>：记录了分区的 leader 副本在不同的选举周期中的偏移量信息，帮助 Kafka 在故障恢复时确定正确的 leader 和消息偏移量。</li>
+</ul>
+</li>
+<li><p><strong>partition.metadata 文件</strong>：</p>
+<ul>
+<li><strong>描述</strong>：这是 Kafka 的分区元数据文件。</li>
+<li><strong>作用</strong>：存储分区的基本元数据信息，如分区的 leader、replica 列表等，用于分区的管理和协调。</li>
+</ul>
+</li>
+</ol>
+<h1 id="4-数据定位原理"><a href="#4-数据定位原理" class="headerlink" title="4. 数据定位原理"></a>4. 数据定位原理</h1><p>log等文件直接打开会乱码，使用以下工具可以解析到控制台。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-run-class.sh kafka.tools.DumpLogSegments --files /path/to/log-file.log --print-data-log</span><br></pre></td></tr></table></figure>
+
+<p>一个log文件里面有如下内容，</p>
+<img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/78daa8f7-08cb-4619-a443-f8a695d80de8.png" class="">
+
+<p>Kafka 日志文件中的内容并不是简单的按行排列的消息，而是采用了批处理（batch）的方式来存储消息。</p>
+<p>那么.index文件中可能是如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">offset: 3 position: 95</span><br></pre></td></tr></table></figure>
+
+<p><code>.index</code> 文件并不会为每一条消息都记录映射关系，而是每隔一定的字节数（由配置 <code>log.index.interval.bytes</code> 决定，默认4096）记录一次。</p>
+<img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/790a1cc5-af68-496b-a6ef-c1109a800389.png" class="">
+
+<p>如上图，</p>
+<h4 id="LogSegment-类"><a href="#LogSegment-类" class="headerlink" title="LogSegment 类"></a>LogSegment 类</h4><p><code>LogSegment</code> 主要负责一个段的日志管理。它包括：</p>
+<ul>
+<li><strong>日志文件（.log）</strong>：存储实际的消息数据。</li>
+<li><strong>偏移量索引文件（.index）</strong>：存储消息偏移量到物理位置的映射。</li>
+<li><strong>时间戳索引文件（.timeindex）</strong>：存储消息时间戳到物理位置的映射。</li>
+</ul>
+<h4 id="UnifiedLog-类"><a href="#UnifiedLog-类" class="headerlink" title="UnifiedLog 类"></a>UnifiedLog 类</h4><p><code>UnifiedLog</code> 管理一个分区的所有日志段。它通过跳表(<code>ConcurrentSkipListMap</code>)实现多个 <code>LogSegment</code> 日志的连续存储。<code>UnifiedLog</code> 的主要职责包括：</p>
+<ul>
+<li><strong>消息写入</strong>：将消息追加到当前活动的 <code>LogSegment</code> 中。如果当前日志段已满，滚动到新的日志段。</li>
+<li><strong>消息读取</strong>：根据偏移量或时间戳查找并读取消息，可能跨越多个日志段。</li>
+<li><strong>日志截断</strong>：根据保留策略（如日志保留时间或大小），截断过期或不需要的日志段。</li>
+<li><strong>数据恢复</strong>：在 broker 重启或故障恢复时，从日志段中恢复数据。</li>
+</ul>
+<p>如图，要查询偏移量为7的数据：</p>
+<ol>
+<li><p>通过跳表定位到对应的LogSegment</p>
+</li>
+<li><p>通过.index，经由二分法等高效定位指定偏移量的位置（如果没记录，则使用最大的小于偏移量位置）</p>
+</li>
+<li><p>按照指定位置快速定位到偏移量7的位置（或更前面一些）</p>
+</li>
+</ol>
+<h1 id="5-副本数据同步"><a href="#5-副本数据同步" class="headerlink" title="5. 副本数据同步"></a>5. 副本数据同步</h1><img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/d71f045e-15ec-40c9-b9e5-f23ee1141012.png" class="">
+
+<p>follower会定时向leader拉取数据。</p>
+<h4 id="HW水位线"><a href="#HW水位线" class="headerlink" title="HW水位线"></a>HW水位线</h4><img src="/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/8c5a8142-9f47-4679-9255-478dc9d6c7aa.png" class="">
+
+<p>水位线（HW）是 Kafka 中每个分区的一个偏移量，它表示已经被所有同步副本（leader 和 follower）确认并复制的最高偏移量。</p>
+<ul>
+<li><p>数据一致性：HW 确保只有那些已经被所有同步副本成功复制的消息才会对消费者可见。这样可以防止数据不一致的问题，防止读取到未被完全复制的消息。</p>
+</li>
+<li><p>数据可靠性：HW 确保了在系统发生故障时，数据不会丢失，并且消费者读取到的数据是可靠的。如果设置了 <code>acks=all</code>，那么只有当所有同步副本都确认收到消息后，HW 才会更新。这确保了数据已经被多个副本存储，防止数据丢失。</p>
+</li>
+<li><p>故障恢复：当 leader 副本故障时，Kafka 会从同步副本中选举一个新的 leader 副本。新的 leader 会从 HW 位置开始，确保它拥有所有已提交的消息。</p>
+</li>
+<li><p>提高数据处理的可靠性和简化系统设计。生产者和消费者不需要处理复杂的数据一致性逻辑，只需依赖 Kafka 的 HW 机制。消费者读取的数据都是已经被确认的可靠数据，避免处理未确认数据带来的复杂性和错误。</p>
+</li>
+</ul>
+<h4 id="LEO末端偏移量"><a href="#LEO末端偏移量" class="headerlink" title="LEO末端偏移量"></a>LEO末端偏移量</h4><p>LEO（Log End Offset）是 Kafka 中的一个重要概念，代表一个分区的日志末端偏移量。具体来说，LEO 是指分区中下一条待写入消息的偏移量。</p>
+<h4 id="HW更新原理"><a href="#HW更新原理" class="headerlink" title="HW更新原理"></a>HW更新原理</h4><p>Leader会记录所有副本的LEO，以及HW。</p>
+<p>Follower会记录自己的LEO，以及HW。</p>
+<ol>
+<li><p>消息来到Leader，Leader更新自身LEO。</p>
+</li>
+<li><p>Follower向Leader同步数据，同步发送自身LEO，Leader更新LEO数据，并更新HW。</p>
+</li>
+<li><p>Leader将数据返回到Follower，并携带HW，Followe同步HW的值，并更新自身LEO。</p>
+</li>
+</ol>
+<p>如此反复，LEO和HW就在不断地更新。</p>
+<h1 id="6-数据清除"><a href="#6-数据清除" class="headerlink" title="6. 数据清除"></a>6. 数据清除</h1><ul>
+<li><code>log.retention.hours</code>，<code>log.retention.minutes</code>，<code>log.retention.ms</code>：日志保留的时间。超过这个时间的日志文件将被删除。<code>log.retention.hours</code>默认值为168（即 7 天）</li>
+<li><code>log.retention.check.interval.ms</code>：指定 Kafka Broker 多长时间检查一次日志文件，并根据配置的日志保留策略删除或压缩过期的日志文件。默认值：300000 毫秒（即 5 分钟）.</li>
+<li><code>log.retention.bytes</code>：每个分区保留的最大日志大小，超过这个大小的日志将被删除。默认值：-1（表示没有大小限制）。</li>
+<li><code>log.cleanup.policy</code>：日志清理策略，支持 delete 和 compact 两种模式。delete 模式表示根据保留策略删除旧日志，compact 模式表示日志压缩。默认值为delete。</li>
+<li>log.cleaner.min.cleanable.ratio：日志分段中可以被清理的最小比例。仅当分段中可清理的日志比例超过此值时，才会触发日志压缩。</li>
+<li>log.cleaner.delete.retention.ms：被标记为删除的记录在清理前的保留时间（以毫秒为单位）。在此时间之后，记录将从日志中永久删除。</li>
+</ul>
+<p>关于 <code>log.cleanup.policy=compact</code>，因为数据会丢失，所以这种策略只适用于保存数据最新状态的特殊场景。压缩步骤如下：</p>
+<ol>
+<li><p>标记旧数据：<br>Kafka会通过定期扫描日志分段（log segment）来查找每个key的最新值。对于同一个key，Kafka会将旧的值标记为删除（通常是通过在记录上设置一个删除标记）。</p>
+</li>
+<li><p>合并过程：<br>Kafka在后台运行一个合并过程（compaction process），这个过程会将分段中旧的key值对删除，保留最新的key值对。合并过程是增量进行的，Kafka并不会在每次写入消息时都触发这个过程。</p>
+</li>
+<li><p>实际删除：<br>被标记为删除的key值对并不会立即从日志分段中删除。Kafka的压缩过程是定期进行的，时间间隔和触发条件可以通过配置参数来调整。默认情况下，Kafka会在后台线程中异步执行这个压缩过程。</p>
+</li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Kafka之存储设计</p><p><a href="https://xiamu-ssr.github.io/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/">https://xiamu-ssr.github.io/Hexo/2024/07/20/2024-H2/2024-07-20-19-59-46/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-07-20</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/Kafka/">Kafka</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/%E5%AD%98%E5%82%A8/">存储</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2024/07/30/2024-H2/2024-07-30-18-58-27/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Kafka Consumer</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2024/07/19/2024-H2/2024-07-19-21-29-10/"><span class="level-item">Kafka Producer之事务性</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "a3f3d308ace407786eb5b289ee2899bc",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#1-分区和副本的存储结构"><span class="level-left"><span class="level-item">1. 分区和副本的存储结构</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-分区和副本的分布"><span class="level-left"><span class="level-item">1. 分区和副本的分布</span></span></a></li><li><a class="level is-mobile" href="#2-存储目录结构"><span class="level-left"><span class="level-item">2. 存储目录结构</span></span></a></li><li><a class="level is-mobile" href="#3-文件描述"><span class="level-left"><span class="level-item">3. 文件描述</span></span></a></li></ul></li><li><a class="level is-mobile" href="#2-相关配置"><span class="level-left"><span class="level-item">2. 相关配置</span></span></a></li><li><a class="level is-mobile" href="#3-数据文件类型"><span class="level-left"><span class="level-item">3. 数据文件类型</span></span></a></li><li><a class="level is-mobile" href="#4-数据定位原理"><span class="level-left"><span class="level-item">4. 数据定位原理</span></span></a></li><li><a class="level is-mobile" href="#5-副本数据同步"><span class="level-left"><span class="level-item">5. 副本数据同步</span></span></a></li><li><a class="level is-mobile" href="#6-数据清除"><span class="level-left"><span class="level-item">6. 数据清除</span></span></a></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

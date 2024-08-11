@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#123456"><title>Kafka基础框架图推演 - Hexo</title><link rel="manifest" href="/Hexo/manifest.json"><meta name="theme-color" content="#1E1E1E"><meta name="application-name" content="夏木的个人博客-记录"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#1E1E1E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="夏木的个人博客-记录"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="1. 单点模型1. 名词概念 Broker：是指Kafka集群中的一个节点。一个Kafka集群由多个Broker组成，这些Broker共同协作来处理消息的存储、传输和消费。Broker管理一个或多个分区。  Topic：生产者将消息发送到指定的Topic，消费者订阅Topic以获取消息。Topic本身只是一个逻辑上的分组，不具有物理存储的概念。  Partition：是Topic的子集，是Kafk"><meta property="og:type" content="blog"><meta property="og:title" content="Kafka基础框架图推演"><meta property="og:url" content="https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="1. 单点模型1. 名词概念 Broker：是指Kafka集群中的一个节点。一个Kafka集群由多个Broker组成，这些Broker共同协作来处理消息的存储、传输和消费。Broker管理一个或多个分区。  Topic：生产者将消息发送到指定的Topic，消费者订阅Topic以获取消息。Topic本身只是一个逻辑上的分组，不具有物理存储的概念。  Partition：是Topic的子集，是Kafk"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/73e1294d-535c-4793-b8bd-188e2cb95588.png"><meta property="article:published_time" content="2024-07-10T20:47:46.000Z"><meta property="article:modified_time" content="2024-08-11T07:21:48.486Z"><meta property="article:author" content="Xiamu"><meta property="article:tag" content="架构"><meta property="article:tag" content="Kafka"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/73e1294d-535c-4793-b8bd-188e2cb95588.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/"},"headline":"Kafka基础框架图推演","image":["https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/73e1294d-535c-4793-b8bd-188e2cb95588.png"],"datePublished":"2024-07-10T20:47:46.000Z","dateModified":"2024-08-11T07:21:48.486Z","author":{"@type":"Person","name":"Xiamu"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"https://xiamu-ssr.github.io/img/logo.svg"}},"description":"1. 单点模型1. 名词概念 Broker：是指Kafka集群中的一个节点。一个Kafka集群由多个Broker组成，这些Broker共同协作来处理消息的存储、传输和消费。Broker管理一个或多个分区。  Topic：生产者将消息发送到指定的Topic，消费者订阅Topic以获取消息。Topic本身只是一个逻辑上的分组，不具有物理存储的概念。  Partition：是Topic的子集，是Kafk"}</script><link rel="canonical" href="https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/"><link rel="icon" href="/Hexo/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/Hexo/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/Hexo/">Home</a><a class="navbar-item" href="/Hexo/archives">Archives</a><a class="navbar-item" href="/Hexo/categories">Categories</a><a class="navbar-item" href="/Hexo/tags">Tags</a><a class="navbar-item" href="/Hexo/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Xiamu-ssr/Hexo"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/73e1294d-535c-4793-b8bd-188e2cb95588.png" alt="Kafka基础框架图推演"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-07-10T20:47:46.000Z" title="7/10/2024, 8:47:46 PM">2024-07-10</time>发表</span><span class="level-item"><time dateTime="2024-08-11T07:21:48.486Z" title="8/11/2024, 7:21:48 AM">2024-08-11</time>更新</span><span class="level-item"><a class="link-muted" href="/Hexo/categories/SpringCloud/">SpringCloud</a><span> / </span><a class="link-muted" href="/Hexo/categories/SpringCloud/Kafka/">Kafka</a></span><span class="level-item">9 分钟读完 (大约1328个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">Kafka基础框架图推演</h1><div class="content"><h1 id="1-单点模型"><a href="#1-单点模型" class="headerlink" title="1. 单点模型"></a>1. 单点模型</h1><h2 id="1-名词概念"><a href="#1-名词概念" class="headerlink" title="1. 名词概念"></a>1. 名词概念</h2><ol>
+<li><p><strong>Broker</strong>：是指Kafka集群中的一个节点。一个Kafka集群由多个Broker组成，这些Broker共同协作来处理消息的存储、传输和消费。Broker管理一个或多个分区。</p>
+</li>
+<li><p><strong>Topic</strong>：生产者将消息发送到指定的Topic，消费者订阅Topic以获取消息。Topic本身只是一个逻辑上的分组，不具有物理存储的概念。</p>
+</li>
+<li><p><strong>Partition</strong>：是Topic的子集，是Kafka中实际存储和处理消息的基本单元。每个Topic可以分成多个Partition，每个Partition都是一个有序的、不可变的消息序列。</p>
+</li>
+<li><p><strong>Replica</strong>：分区可以存在多副本。</p>
+</li>
+<li><p><strong>Leader Broker</strong>：分区的多副本下，负责处理所有的读写请求的分区所处的broker。</p>
+</li>
+<li><p><strong>FollowerBroker</strong>：分区的多副本下，负责同步Leader的数据的分区所处的broker。</p>
+</li>
+</ol>
+<img src="/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/bdca5bad-95a7-4c18-b5cb-cf85291186d1.png" class="">
+
+<p>生产者把消息（record）发送到kafka，消费者通过偏移量（offset，类似数组的下标）获取数据。</p>
+<p>同时每个分区会有自己的Log文件，kafka使用log文件来把数据保存到磁盘。</p>
+<h1 id="2-分布式集群-横向扩展"><a href="#2-分布式集群-横向扩展" class="headerlink" title="2. 分布式集群-横向扩展"></a>2. 分布式集群-横向扩展</h1><h2 id="1-Topic多分区"><a href="#1-Topic多分区" class="headerlink" title="1. Topic多分区"></a>1. Topic多分区</h2><img src="/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/73e1294d-535c-4793-b8bd-188e2cb95588.png" class="">
+
+<h3 id="关于生产"><a href="#关于生产" class="headerlink" title="关于生产"></a>关于生产</h3><p>生产者通过Bootstrap Broker连接到Kafka集群。这一步是为了建立初始连接，并获取集群的元数据。</p>
+<p>一旦生产者获取了这些元数据，它就知道每个分区的Leader Broker是谁，从而可以将消息直接发送到正确的Leader Broker。</p>
+<p>生产者发送消息时必须指定Topic，但是分区是可选的。</p>
+<ul>
+<li><strong>不指定分区</strong>：如果生产者没有手动指定分区，Kafka会根据默认的分区策略将消息分配到分区。默认的分区策略如下：<ul>
+<li>如果消息有键（Key），Kafka会根据键的哈希值来确定分区。相同的键总是被分配到同一个分区。</li>
+<li>如果消息没有键（Key），Kafka会使用轮询或随机的方式将消息分配到分区，以确保消息分布均匀。</li>
+</ul>
+</li>
+<li><strong>指定分区</strong>：生产者也可以在发送消息时明确指定分区。这样，消息会直接发送到指定的分区。</li>
+</ul>
+<p>在Kafka中，生产者将消息发送到Broker时，Broker的第一个操作就是将消息记录到磁盘中，以确保消息的持久性和可靠性。</p>
+<h3 id="关于消费"><a href="#关于消费" class="headerlink" title="关于消费"></a>关于消费</h3><p>Kafka中的消费者通常属于一个消费者组（Consumer Group）。每个消费者组有一个唯一的组ID。消费者组的概念用于实现消息的负载均衡和并行消费。</p>
+<p>当多个消费者属于同一个组时，Kafka会将Topic的分区分配给组内的消费者。**<mark>每个分区只能由组内的一个消费者消费</mark>**，这样可以实现负载均衡。</p>
+<ul>
+<li><p><strong>单个消费者订阅一个Topic</strong>：</p>
+<ul>
+<li>如果只有一个消费者订阅了一个Topic，那么该消费者会接收到该Topic中的所有消息。</li>
+</ul>
+</li>
+<li><p><strong>多个消费者属于同一个组</strong>：</p>
+<ul>
+<li>Topic中的分区会在组内的消费者之间进行分配。每个分区只会被组内的一个消费者消费。</li>
+<li>如果消费者数量多于分区数，多余的消费者将不会分配到任何分区，处于空闲状态。这些消费者可以在有其他消费者退出时自动接管其分区，从而实现高可用性。</li>
+<li>如果消费者数量少于分区数，有些消费者会被分配多个分区。</li>
+</ul>
+</li>
+<li><p><strong>多个消费者属于不同的组</strong>：</p>
+<ul>
+<li>每个组都会独立消费Topic中的所有消息。也就是说，消息会被广播到所有组中的消费者。</li>
+</ul>
+</li>
+</ul>
+<h3 id="关于分区新增"><a href="#关于分区新增" class="headerlink" title="关于分区新增"></a>关于分区新增</h3><p>Kafka会在集群中创建新的分区。这些新的分区会被分配到不同的Broker，以实现数据的均衡存储和高可用性。Kafka不会自动将现有分区的数据重新分配或均衡到新的分区。新的分区从创建时开始是空的，只有在后续生产者发送消息时，才会向这些新的分区写入数据。消费者组会感知到分区数量的变化，并触发重新平衡。</p>
+<h2 id="2-分区多副本"><a href="#2-分区多副本" class="headerlink" title="2. 分区多副本"></a>2. 分区多副本</h2><img src="/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/e49bc600-0d50-4539-945b-e231970d0e76.png" class="">
+
+<p>Kafka允许每个分区有多个副本（Replica），这些副本存储在不同的Broker上。一个副本被称为Leader，负责处理所有的读写请求，其他副本为Follower，负责同步Leader的数据。</p>
+<p>多个副本同时只有一个副本可以读写，这就是Leader副本，其他副本成为Follower副本，用作备份。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Kafka基础框架图推演</p><p><a href="https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/">https://xiamu-ssr.github.io/Hexo/2024/07/10/2024-H2/2024-07-10-20-47-43/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>Xiamu</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-07-10</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-08-11</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/%E6%9E%B6%E6%9E%84/">架构</a><a class="link-muted mr-2" rel="tag" href="/Hexo/tags/Kafka/">Kafka</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" href="https://afdian.net/u/5247e1a42ec011efb6055254001e7c00" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>爱发电</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="/Hexo/images/alipay.jpg" alt="支付宝"></span></a><a class="button donate" href="https://www.buymeacoffee.com/xiamu" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>送我杯咖啡</span></a><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/Hexo/images/wechat.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/Hexo/2024/07/10/2024-H2/2024-07-10-21-37-54/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Kafka基础组件图推演</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/Hexo/2024/07/03/2024-H2/2024-07-03-16-23-53/"><span class="level-item">docker部署简单的Kafka</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div id="comment-container"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+            id: "fe99fc874617ac970a314264b008f460",
+            repo: "Hexo",
+            owner: "Xiamu-ssr",
+            clientID: "Ov23liifh7QhDzZDzWm0",
+            clientSecret: "9ebd89ad02c6a87ea6ae8b0036ded99acb04ebab",
+            admin: ["Xiamu-ssr"],
+            createIssueManually: false,
+            distractionFreeMode: false,
+            perPage: 15,
+            pagerDirection: "last",
+            
+            
+            enableHotKey: true,
+            language: "zh-CN",
+        })
+        gitalk.render('comment-container')</script></div></div></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/Hexo/img/avatar.png" alt="Xiamu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Xiamu</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/Hexo/archives"><p class="title">120</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/Hexo/categories"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/Hexo/tags"><p class="title">98</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#1-单点模型"><span class="level-left"><span class="level-item">1. 单点模型</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-名词概念"><span class="level-left"><span class="level-item">1. 名词概念</span></span></a></li></ul></li><li><a class="level is-mobile" href="#2-分布式集群-横向扩展"><span class="level-left"><span class="level-item">2. 分布式集群-横向扩展</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-Topic多分区"><span class="level-left"><span class="level-item">1. Topic多分区</span></span></a></li><li><a class="level is-mobile" href="#2-分区多副本"><span class="level-left"><span class="level-item">2. 分区多副本</span></span></a></li></ul></li></ul></div></div><script src="/Hexo/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/Hexo/"><img src="/Hexo/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 Xiamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">共<span id="busuanzi_value_site_uv">0</span>个访客</span></p><p class="is-size-7">© 2024 Xiamu ❄️</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/Hexo/js/column.js"></script><script src="/Hexo/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/Hexo/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/Hexo/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/Hexo/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/Hexo/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/Hexo/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
